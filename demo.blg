@@ -1,0 +1,62 @@
+This is BibTeX, Version 0.99d (TeX Live 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: demo.aux
+The style file: abbrv.bst
+Database file #1: refs/bigdata.bib
+A bad cross reference---entry "DBLP:conf/sigmod/AcharyaGPR99"
+refers to entry "DBLP:conf/sigmod/99, DBLP:conf/sigmod/99", which doesn't exist
+A bad cross reference---entry "DBLP:conf/eurosys/AgarwalMPMMS13"
+refers to entry "DBLP:conf/eurosys/2013", which doesn't exist
+A bad cross reference---entry "DBLP:conf/cidr/SidirourgosKB11"
+refers to entry "DBLP:conf/cidr/2011", which doesn't exist
+A bad cross reference---entry "DBLP:conf/sigmod/JefferyFH08"
+refers to entry "DBLP:conf/sigmod/2008", which doesn't exist
+A bad cross reference---entry "DBLP:conf/sigmod/XinRZFSS13"
+refers to entry "DBLP:conf/sigmod/2013", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:conf/eurosys/2013"
+Warning--I didn't find a database entry for "DBLP:conf/sigmod/99, DBLP:conf/sigmod/99"
+Warning--I didn't find a database entry for "DBLP:conf/sigmod/2008"
+Warning--I didn't find a database entry for "DBLP:conf/cidr/2011"
+Warning--I didn't find a database entry for "DBLP:conf/sigmod/2013"
+You've used 10 entries,
+            2118 wiz_defined-function locations,
+            562 strings with 5642 characters,
+and the built_in function-call counts, 3949 in all, are:
+= -- 364
+> -- 202
+< -- 5
++ -- 81
+- -- 70
+* -- 260
+:= -- 624
+add.period$ -- 28
+call.type$ -- 10
+change.case$ -- 63
+chr.to.int$ -- 0
+cite$ -- 10
+duplicate$ -- 157
+empty$ -- 315
+format.name$ -- 70
+if$ -- 864
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 8
+newline$ -- 51
+num.names$ -- 20
+pop$ -- 86
+preamble$ -- 1
+purify$ -- 55
+quote$ -- 0
+skip$ -- 130
+stack$ -- 0
+substring$ -- 217
+swap$ -- 56
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 40
+warning$ -- 0
+while$ -- 32
+width$ -- 12
+write$ -- 103
+(There were 5 error messages)

@@ -1,0 +1,53 @@
+\begin{thebibliography}{10}
+
+\bibitem{DBLP:conf/sigmod/AcharyaGPR99}
+S.~Acharya, P.~B. Gibbons, V.~Poosala, and S.~Ramaswamy.
+\newblock The aqua approximate query answering system.
+\newblock In {\em SIGMOD Conference}, pages 574--576, 1999.
+
+\bibitem{DBLP:conf/eurosys/AgarwalMPMMS13}
+S.~Agarwal, B.~Mozafari, A.~Panda, H.~Milner, S.~Madden, and I.~Stoica.
+\newblock {BlinkDB:} queries with bounded errors and bounded response times on
+  very large data.
+\newblock In {\em EuroSys}, pages 29--42, 2013.
+
+\bibitem{amplab}
+{AMPLab}.
+\newblock \url{http://amplab.cs.berkeley.edu/}.
+
+\bibitem{DBLP:journals/pvldb/FanLMTY10}
+W.~Fan, J.~Li, S.~Ma, N.~Tang, and W.~Yu.
+\newblock Towards certain fixes with editing rules and master data.
+\newblock {\em PVLDB}, 3(1):173--184, 2010.
+
+\bibitem{saqpfull}
+{Full version}.
+\newblock \url{http://goo.gl/SPNP1R}.
+
+\bibitem{hellerstein2008quantitative}
+J.~M. Hellerstein.
+\newblock Quantitative data cleaning for large databases.
+\newblock {\em United Nations Economic Commission for Europe (UNECE)}, 2008.
+
+\bibitem{DBLP:conf/sigmod/JefferyFH08}
+S.~R. Jeffery, M.~J. Franklin, and A.~Y. Halevy.
+\newblock Pay-as-you-go user feedback for dataspace systems.
+\newblock In {\em SIGMOD Conference}, pages 847--860, 2008.
+
+\bibitem{DBLP:conf/cidr/SidirourgosKB11}
+L.~Sidirourgos, M.~L. Kersten, and P.~A. Boncz.
+\newblock Sciborq: Scientific data management with bounds on runtime and
+  quality.
+\newblock In {\em CIDR}, pages 296--301, 2011.
+
+\bibitem{DBLP:conf/sigmod/XinRZFSS13}
+R.~S. Xin, J.~Rosen, M.~Zaharia, M.~J. Franklin, S.~Shenker, and I.~Stoica.
+\newblock Shark: Sql and rich analytics at scale.
+\newblock In {\em SIGMOD Conference}, pages 13--24, 2013.
+
+\bibitem{DBLP:journals/pvldb/YakoutENOI11}
+M.~Yakout, A.~K. Elmagarmid, J.~Neville, M.~Ouzzani, and I.~F. Ilyas.
+\newblock Guided data repair.
+\newblock {\em PVLDB}, 4(5):279--289, 2011.
+
+\end{thebibliography}
