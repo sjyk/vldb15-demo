@@ -1,6 +1,8 @@
 \section{Introduction}\label{sec:intro}
 \jn{Honestly, I didn't quite buy declarativity of the system. In my opinion, data cleaning is so domain specific. It's hard to make it declarative. For a given domain, people may need to write their own data cleaning system. There is a lack of a data cleaning framework that they can build based on. This motivates us to develop such framework. 
 
+\ewu{That's fair, will need to address why a framework is necessary (I think a framework is the correct pitch, hard to sell a set of operators).  Are the above chalenges -- extensibility and scalability -- actually difficult?  Worried it's straightforward application of existing techniques.}
+
 We analyze a large variety of domain specific data cleaning systems, and identify several key components: declarative data cleaning operators (e.g., similarity joins), active learning, and crowd/expert sourcing platforms that they require. In our framework, we abstract these components, and implement them in a general way. 
 
 We mainly address two challenges: extensibility and scalability. For the former one, we came up with a nice data-cleaning pipeline API, which people can easily use to compose their own data cleaning tasks. For the latter one, we address it in two aspects: Sampling + Asynchrony.}
