@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  18 MAR 2015 16:59
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  23 MAR 2015 19:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -549,130 +549,101 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
 LaTeX Warning: No \author given.
 
 (./abstract.tex
-LaTeX Font Info:    Try loading font information for T1+aess on input line 6.
+LaTeX Font Info:    Try loading font information for T1+aess on input line 3.
  (/usr/local/texlive/2013/texmf-dist/tex/latex/ae/t1aess.fd
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 ))
 (./introduction.tex
+
+LaTeX Warning: Citation `wang1999sample' on page \thepage  undefined on input l
+ine 5.
+
 
 LaTeX Warning: Citation `DBLP:conf/sigmod/GokhaleDDNRSZ14' on page \thepage  un
 defined on input line 6.
 
 
 LaTeX Warning: Citation `DBLP:conf/uist/GuoKHH11' on page \thepage  undefined o
-n input line 6.
+n input line 7.
 
 
 LaTeX Warning: Citation `wang1999sample' on page \thepage  undefined on input l
-ine 6.
+ine 40.
 
-
-LaTeX Warning: Citation `altowim2014progressive' on page \thepage  undefined on
- input line 7.
-
-
-LaTeX Warning: Citation `volkovs2014continuous' on page \thepage  undefined on 
-input line 7.
-
-<figs/architecture.pdf, id=1, 915.42pt x 230.8625pt>
-File: figs/architecture.pdf Graphic file (type pdf)
-
-<use figs/architecture.pdf>
-Package pdftex.def Info: figs/architecture.pdf used on input line 16.
-(pdftex.def)             Requested size: 240.0pt x 60.52657pt.
-
-
-LaTeX Warning: Citation `d' on page \thepage  undefined on input line 25.
-
-
-LaTeX Warning: Citation `d' on page \thepage  undefined on input line 25.
-
-
-LaTeX Warning: Citation `d' on page \thepage  undefined on input line 25.
-
-
-Overfull \hbox (11.32758pt too wide) in paragraph at lines 34--36
-[]\T1/aer/m/it/9 Analysis
- []
-
-LaTeX Font Info:    Font shape `T1/aess/m/it' in size <9> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 40.
-[1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+) (./architecture.tex [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/upd
+map/pdftex.map}
 
 
 Non-PDF special ignored!
 
- <./figs/architecture.pdf>]
-<figs/dirty-data.pdf, id=40, 938.50626pt x 207.77625pt>
-File: figs/dirty-data.pdf Graphic file (type pdf)
-
-<use figs/dirty-data.pdf>
-Package pdftex.def Info: figs/dirty-data.pdf used on input line 45.
-(pdftex.def)             Requested size: 240.0pt x 53.13283pt.
-) (./implementation.tex
-
-LaTeX Warning: Citation `DBLP:conf/vldb/GalhardasFSSS01' on page \thepage  unde
-fined on input line 3.
-
-
-Overfull \hbox (3.77684pt too wide) in paragraph at lines 32--38
-[]\T1/aer/m/it/9 To clean \T1/aess/m/sl/9 Com-
+]
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 13--14
+[][][][][][][][][][][][][][][][] 
  []
 
-[2 <./figs/dirty-data.pdf>] <figs/pair.png, id=78, 537.50812pt x 224.33812pt>
-File: figs/pair.png Graphic file (type png)
 
-<use figs/pair.png>
-Package pdftex.def Info: figs/pair.png used on input line 84.
-(pdftex.def)             Requested size: 134.3767pt x 56.08438pt.
- <figs/condition.png, id=80, 333.74687pt x 232.87pt>
-File: figs/condition.png Graphic file (type png)
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 18--19
+[][][][][][][][][][][][][][][][] 
+ []
 
-<use figs/condition.png>
-Package pdftex.def Info: figs/condition.png used on input line 92.
-(pdftex.def)             Requested size: 83.43651pt x 58.21735pt.
- <figs/entry.png, id=81, 537.50812pt x 224.33812pt>
+
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 20--21
+[][][][][][][][][][][][][][][][] 
+ []
+
+) (./implementation.tex [2] <figs/entry.png, id=20, 537.50812pt x 224.33812pt>
 File: figs/entry.png Graphic file (type png)
 
 <use figs/entry.png>
-Package pdftex.def Info: figs/entry.png used on input line 101.
+Package pdftex.def Info: figs/entry.png used on input line 83.
 (pdftex.def)             Requested size: 134.3767pt x 56.08438pt.
-) (./system.tex
-Overfull \hbox (3.81271pt too wide) in paragraph at lines 23--25
-[]\T1/aer/m/it/9 Analysis ques-
+ <figs/condition.png, id=22, 333.74687pt x 232.87pt>
+File: figs/condition.png Graphic file (type png)
+
+<use figs/condition.png>
+Package pdftex.def Info: figs/condition.png used on input line 97.
+(pdftex.def)             Requested size: 83.43651pt x 58.21735pt.
+ <figs/pair.png, id=23, 537.50812pt x 224.33812pt>
+File: figs/pair.png Graphic file (type png)
+
+<use figs/pair.png>
+Package pdftex.def Info: figs/pair.png used on input line 106.
+(pdftex.def)             Requested size: 134.3767pt x 56.08438pt.
+) (./dsl.tex
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 6--7
+[][][][][][][][][][][][][][][][] 
  []
 
-) (./scenarios.tex) (./takeaway.tex [3 <./figs/pair.png> <./figs/condition.png>
- <./figs/entry.png>]) (./demo.bbl
+[3 <./figs/entry.png> <./figs/condition.png> <./figs/pair.png>]
+
+LaTeX Warning: Citation `DBLP:conf/sigmod/GokhaleDDNRSZ14' on page \thepage  un
+defined on input line 29.
+
+) (./scenarios.tex) (./demo.bbl
 LaTeX Font Info:    Try loading font information for T1+aett on input line 16.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-)) [4
-
-] (./demo.aux)
+)) [4] (./demo.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 8332 strings out of 493315
- 113801 string characters out of 6137904
- 226130 words of memory out of 5000000
- 11547 multiletter control sequences out of 15000+600000
- 60403 words of font info for 87 fonts, out of 8000000 for 9000
+ 8301 strings out of 493315
+ 113337 string characters out of 6137904
+ 231106 words of memory out of 5000000
+ 11528 multiletter control sequences out of 15000+600000
+ 53692 words of font info for 77 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 42i,10n,39p,816b,901s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,10n,39p,816b,839s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/tex
-live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/tex
 live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texli
 ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive
 /2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/20
 13/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/local/texlive/2013/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmssi9.pfb></usr/local/texlive/2013/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2013/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2013/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2013/texmf-di
@@ -680,10 +651,10 @@ st/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2013/texmf-dist
 /fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/
 type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/
 times/utmr8a.pfb>
-Output written on demo.pdf (4 pages, 341054 bytes).
+Output written on demo.pdf (4 pages, 247016 bytes).
 PDF statistics:
- 143 PDF objects out of 1000 (max. 8388607)
- 100 compressed objects within 1 object stream
+ 77 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

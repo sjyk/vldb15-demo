@@ -1,0 +1,60 @@
+\section{System Architecture}
+We first overview the architecture of \projx.
+The main components of \projx are: (1) DSL, (2) Logical Operators, (3) Physical Operators,
+and (4) Approximate Query Processing.
+
+\subsection{\projx DSL}
+We provide a language for specifying the composition of data cleaning operators.
+The logical operators define the input and output behavior of the operation and 
+the physical operators specify the implementation.
+The general syntax of this language is:
+\begin{lstlisting}
+<logical operator> on <relations>
+	with <physical operators> , <params>
+\end{lstlisting}
+These expressions are composable:
+\begin{lstlisting}
+R1 := <logical operator> on <relations> 
+	with <physical operators> , <params>
+R2 := <logical operator> on R1 
+	with <physical operators> , <params>
+\end{lstlisting}
+\projx provides an integration layer of these expressions with Scala/Apache Spark allowing for the manipulation of SchemaRDDs (Spark RDDs with additional schema information):
+\begin{lstlisting}
+val rddA = spark.textFile(file).toSchemaRDD
+val cleanData = clean(rddA,<expression>)
+\end{lstlisting}
+
+\subsection{Logical Operators}
+\projx specifies three logical operators: Extraction, Filtering, and Similarity Join. 
+There are a few additional operators, Sampling and Transitive Closure, which are not data cleaning operations but behave like
+one of the logical operators.
+The composition of these operators support a variety of data cleaning
+operations. 
+For example, a deduplication task can be expressed as a Similarity Join to pair similar records
+together and then a filtering task to remove false positives.
+These logical operators specify the input and output data schema and allow us to compose operations.
+
+
+\subsection{Physical Operators}
+For each of the logical operators there are different physical implementations.
+We do not currently select the appropriate physical operator and the user has to specify this.
+We do, however, set sensible default parameters for each of the physical operators.
+In \projx, there are three broad categories of physical operators: Automated, Crowd, and Learning.
+An automated physical operator is executed directly in Spark, while a crowd operator uses a microtask platform.
+A learning operator takes in training examples (whether crowd or ground truth) and learns an automated operator.
+Architecturally, we separate crowd sourcing and automated data cleaning.
+There is a crowd server that acts as a layer of indirection between the Spark codebase and crowd sourcing APIs.
+
+\subsection{Approximate Query Processing}
+Lastly, \projx provides an approximate query processing framework to answer queries on sampled and cleaned relations.
+This allows for unbiased aggregate result estimation during prototyping and debugging.
+It further allows for reduced cleaning costs if the user is interested in only aggregate query processing as that may
+not require cleaning the full data.  
+
+
+
+
+
+
+
