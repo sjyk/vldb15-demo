@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  23 MAR 2015 19:30
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  24 MAR 2015 01:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -188,6 +188,46 @@ LaTeX Font Info:    Try loading font information for T1+aer on input line 100.
 (/usr/local/texlive/2013/texmf-dist/tex/latex/ae/t1aer.fd
 File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+LaTeX Info: Redefining \color on input line 702.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen123
+\extrarowheight=\dimen124
+\NC@list=\toks36
+\extratabsurround=\skip44
+\backup@length=\skip45
+)
+\everycr=\toks37
+\minrowclearance=\skip46
+)
 (/usr/local/texlive/2013/texmf-dist/tex/latex/pdfpages/pdfpages.sty
 Package: pdfpages 2012/08/31 v0.4t Insert pages of external PDF documents (AM)
 
@@ -198,14 +238,14 @@ Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count109
 \calc@Bcount=\count110
-\calc@Adimen=\dimen123
-\calc@Bdimen=\dimen124
-\calc@Askip=\skip44
-\calc@Bskip=\skip45
+\calc@Adimen=\dimen125
+\calc@Bdimen=\dimen126
+\calc@Askip=\skip47
+\calc@Bskip=\skip48
 LaTeX Info: Redefining \setlength on input line 76.
 LaTeX Info: Redefining \addtolength on input line 77.
 \calc@Ccount=\count111
-\calc@Cskip=\skip46
+\calc@Cskip=\skip49
 )
 (/usr/local/texlive/2013/texmf-dist/tex/latex/eso-pic/eso-pic.sty
 Package: eso-pic 2010/10/06 v2.0c eso-pic (RN)
@@ -216,29 +256,12 @@ Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
-))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
-
-(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
-File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
-)
-Package xcolor Info: Driver file: pdftex.def on input line 225.
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
-Package xcolor Info: Model `RGB' extended on input line 1353.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
-))
+)))
 (/usr/local/texlive/2013/texmf-dist/tex/latex/pdfpages/pppdftex.def
 File: pppdftex.def 2012/08/31 v0.4t Pdfpages driver for pdfTeX (AM)
 )
 \AM@pagebox=\box30
-\AM@toc@title=\toks36
+\AM@toc@title=\toks38
 \c@AM@survey=\count112
 \AM@templatesizebox=\box31
 )
@@ -295,18 +318,18 @@ e
 (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count113
 \lst@gtempboxa=\box32
-\lst@token=\toks37
+\lst@token=\toks39
 \lst@length=\count114
-\lst@currlwidth=\dimen125
+\lst@currlwidth=\dimen127
 \lst@column=\count115
 \lst@pos=\count116
-\lst@lostspace=\dimen126
-\lst@width=\dimen127
+\lst@lostspace=\dimen128
+\lst@width=\dimen129
 \lst@newlines=\count117
 \lst@lineno=\count118
-\abovecaptionskip=\skip47
-\belowcaptionskip=\skip48
-\lst@maxwidth=\dimen128
+\abovecaptionskip=\skip50
+\belowcaptionskip=\skip51
+\lst@maxwidth=\dimen130
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
@@ -321,20 +344,6 @@ Package: listings 2007/02/22 1.4 (Carsten Heinz)
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
-)
-(/usr/local/texlive/2013/texmf-dist/tex/latex/colortbl/colortbl.sty
-Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
-
-(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/array.sty
-Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
-\col@sep=\dimen129
-\extrarowheight=\dimen130
-\NC@list=\toks38
-\extratabsurround=\skip49
-\backup@length=\skip50
-)
-\everycr=\toks39
-\minrowclearance=\skip51
 )
 (/usr/local/texlive/2013/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2013/05/16 v3.9f The Babel package
@@ -357,7 +366,7 @@ Language: english 2012/08/20 v3.3p English support from the babel system
 
 Package Babel Warning: The package option `english' should not be used
 (Babel)                with a more specific one (like `USenglish') on input lin
-e 9.
+e 12.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen132
@@ -488,18 +497,18 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 ) (./demo.aux)
 \openout1 = `demo.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
 
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -524,26 +533,26 @@ LaTeX Font Info:    ... okay on input line 39.
 \c@lemma=\count153
 \c@corollary=\count154
 \c@demonstration=\count155
-LaTeX Font Info:    Try loading font information for U+msa on input line 134.
+LaTeX Font Info:    Try loading font information for U+msa on input line 146.
  (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 134.
+LaTeX Font Info:    Try loading font information for U+msb on input line 146.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 134.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 146.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <9> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 134.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 146.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 134.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 146.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 134.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 146.
 
 
 LaTeX Warning: No \author given.
@@ -553,90 +562,89 @@ LaTeX Font Info:    Try loading font information for T1+aess on input line 3.
  (/usr/local/texlive/2013/texmf-dist/tex/latex/ae/t1aess.fd
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 ))
-(./introduction.tex
+(./introduction.tex) (./architecture.tex
+<figs/architecture.pdf, id=1, 536.0025pt x 303.1325pt>
+File: figs/architecture.pdf Graphic file (type pdf)
 
-LaTeX Warning: Citation `wang1999sample' on page \thepage  undefined on input l
-ine 5.
-
-
-LaTeX Warning: Citation `DBLP:conf/sigmod/GokhaleDDNRSZ14' on page \thepage  un
-defined on input line 6.
-
-
-LaTeX Warning: Citation `DBLP:conf/uist/GuoKHH11' on page \thepage  undefined o
-n input line 7.
+<use figs/architecture.pdf>
+Package pdftex.def Info: figs/architecture.pdf used on input line 13.
+(pdftex.def)             Requested size: 180.67499pt x 102.1756pt.
 
 
-LaTeX Warning: Citation `wang1999sample' on page \thepage  undefined on input l
-ine 40.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-) (./architecture.tex [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/upd
-map/pdftex.map}
+[1{/Users/sirrice/Library/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex
+.map}
 
 
 Non-PDF special ignored!
 
 ]
-Overfull \hbox (4.01483pt too wide) in paragraph at lines 13--14
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 26--27
 [][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (4.01483pt too wide) in paragraph at lines 18--19
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 32--33
 [][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (4.01483pt too wide) in paragraph at lines 20--21
+Overfull \hbox (4.01483pt too wide) in paragraph at lines 34--35
 [][][][][][][][][][][][][][][][] 
  []
 
-) (./implementation.tex [2] <figs/entry.png, id=20, 537.50812pt x 224.33812pt>
+) (./logical.tex) (./physical.tex
+<figs/entry.png, id=12, 537.50812pt x 224.33812pt>
 File: figs/entry.png Graphic file (type png)
-
-<use figs/entry.png>
-Package pdftex.def Info: figs/entry.png used on input line 83.
+ <use figs/entry.png>
+Package pdftex.def Info: figs/entry.png used on input line 34.
 (pdftex.def)             Requested size: 134.3767pt x 56.08438pt.
- <figs/condition.png, id=22, 333.74687pt x 232.87pt>
+
+[2 <./figs/architecture.pdf>]
+<figs/condition.png, id=48, 333.74687pt x 232.87pt>
 File: figs/condition.png Graphic file (type png)
-
-<use figs/condition.png>
-Package pdftex.def Info: figs/condition.png used on input line 97.
+ <use figs/condition.png>
+Package pdftex.def Info: figs/condition.png used on input line 48.
 (pdftex.def)             Requested size: 83.43651pt x 58.21735pt.
- <figs/pair.png, id=23, 537.50812pt x 224.33812pt>
+
+<figs/pair.png, id=49, 537.50812pt x 224.33812pt>
 File: figs/pair.png Graphic file (type png)
-
-<use figs/pair.png>
-Package pdftex.def Info: figs/pair.png used on input line 106.
+ <use figs/pair.png>
+Package pdftex.def Info: figs/pair.png used on input line 57.
 (pdftex.def)             Requested size: 134.3767pt x 56.08438pt.
-) (./dsl.tex
-Overfull \hbox (4.01483pt too wide) in paragraph at lines 6--7
-[][][][][][][][][][][][][][][][] 
- []
-
-[3 <./figs/entry.png> <./figs/condition.png> <./figs/pair.png>]
+)
+(./applications.tex
 
 LaTeX Warning: Citation `DBLP:conf/sigmod/GokhaleDDNRSZ14' on page \thepage  un
-defined on input line 29.
+defined on input line 30.
 
-) (./scenarios.tex) (./demo.bbl
+
+LaTeX Warning: Citation `sampleclean' on page \thepage  undefined on input line
+ 68.
+
+) (./challenges.tex [3 <./figs/entry.png> <./figs/condition.png> <./figs/pair.p
+ng>]) (./scenarios.tex) (./demo.bbl
 LaTeX Font Info:    Try loading font information for T1+aett on input line 16.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-)) [4] (./demo.aux)
+)) [4] [5
+
+]
+(./demo.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 8301 strings out of 493315
- 113337 string characters out of 6137904
- 231106 words of memory out of 5000000
- 11528 multiletter control sequences out of 15000+600000
- 53692 words of font info for 77 fonts, out of 8000000 for 9000
+ 8330 strings out of 493315
+ 113893 string characters out of 6137904
+ 232142 words of memory out of 5000000
+ 11543 multiletter control sequences out of 15000+600000
+ 56839 words of font info for 81 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 42i,10n,39p,816b,839s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,10n,35p,816b,839s stack positions out of 30000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/tex
 live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texli
@@ -644,17 +652,19 @@ ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive
 /2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/20
 13/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/local/texlive/2013/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2013/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2013/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2013/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2013/texmf-dist
-/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/
-type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/
-times/utmr8a.pfb>
-Output written on demo.pdf (4 pages, 247016 bytes).
+xmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2013/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2013/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2013/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2013/texmf-dis
+t/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts
+/type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw
+/times/utmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utm
+ri8a.pfb>
+Output written on demo.pdf (5 pages, 282651 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
+ 112 PDF objects out of 1000 (max. 8388607)
+ 77 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

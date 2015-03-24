@@ -1,4 +1,7 @@
 \documentclass[english]{sig-alternate}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage{amstext}
 \usepackage{pdfpages}
 \usepackage{alltt}
@@ -47,7 +50,7 @@
 \linespread{1}%
 %\pagenumbering{arabic}
 
-\title{Projx: A Spark Library Of Scalable and Composable Data Cleaning Primitives}
+\title{Deep Clearning: Declarative Big Data Cleaning} 
 
 
 \iffalse
@@ -88,7 +91,8 @@
 \newcommand{\sampleclean}{{RawSC}\xspace}
 \newcommand{\allclean}{{AllClean}\xspace}
 \newcommand{\alldirty}{{AllDirty}\xspace}
-\newcommand{\projx}{\textsf{Projx}\xspace}
+\newcommand{\sys}{\textsf{DeepClearner}\xspace}
+\newcommand{\projx}{\sys}
 \newcommand{\saqp}{SAQP\xspace}
 \newcommand{\saqpplus}{\projx}
 \newcommand{\blinkdb}{BlinkDB\xspace}
@@ -125,6 +129,14 @@
 
 \newcommand{\reminder}[1] {{{\bf [[[#1]]]}\xspace}}
 %\newcommand{\reminder}[1] {}
+
+
+\newcommand{\ewu}[1]{\noindent{\color{red}{EWu: #1}}}
+\newcommand{\sanjay}[1]{\noindent{\color{red}{SanJ: #1}}}
+\newcommand{\haas}[1]{\noindent{\color{red}{Haas: #1}}}
+\newcommand{\team}[1]{\noindent{\color{red}{Haas or SanJ: #1}}}
+
+
 \pagestyle{plain}
 
 
@@ -146,8 +158,12 @@
 \input{abstract.tex}
 \input{introduction.tex}
 \input{architecture.tex}
-\input{implementation.tex}
-\input{dsl.tex}
+\input{logical.tex}
+\input{physical.tex}
+\input{applications.tex}
+\input{challenges.tex}
+%\input{implementation.tex}
+%\input{dsl.tex}
 \input{scenarios.tex}
 %\input{takeaway.tex}
 

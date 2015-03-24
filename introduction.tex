@@ -1,4 +1,59 @@
 \section{Introduction}\label{sec:intro}
+
+
+Today's organizations are driven by injesting and generating data from many external and internal sources,
+and combining them together to build complex models, or answer analytical questions.  In most cases, these
+data sources generate dirty data that require a complex data cleaning pipeline -- 
+e.g., data extraction, re-formatting, identification and fixes of missing or incorrect values,
+and removal of redundant information -- before the data is useable by downstream processes.
+The prevalance of data cleaning systems in both the research and industrial communities --
+Corleone does blah, XXX addresses blah. Nadeef does blah -- speak to the importance of a
+data cleaning framework as part of the modern big data ecosystems. \ewu{include open access of data in argument?}
+
+Unfortunately, existing work has focused on narrow data cleaning systems, and 
+there lacks a general, declarative, and scalable data cleaning framework that can be easily extended to new
+data cleaning problems.  For example, \ewu{elaborate on two common data cleaning problems and how existing 
+systems don't fully address them}
+
+In contrast, our work is based on the observation that the majority of data cleaning workflows
+can be decomposed into a small set of logical operations (in addition to traditional database operators):
+filter based on constraints, extract new fields from existing data, and a similarity join to match
+similar or duplicate records. \ewu{quickly validate why this observation holds.}   
+By designing a system around these core operators, we can provide a vast library of physical  
+data cleaning operators that span the range of algorithmic, machine learning, and human computation-based
+implementations that are necessary practical data cleaning pipelines.   \ewu{Describe live inspection as 
+a core feature or is it too easy?}
+
+Designing such a system requires tackling several design challenges:
+
+\begin{enumerate}
+\item Speed
+\item Quality
+\item API Design/extensibilty
+\end{enumerate}
+
+
+
+We have implemented an initial version of \sys on top of the AMPLab Spark stack, which provides us 
+with access to its advanced distributed processing and machine learning features.  Our goal for the current
+version is to implement the core mechanisms for declarative specification of the
+data cleaning pipeline, solidify the API design, and incle support for, and implementations of,
+multiple classes of physical data cleaning operators.
+
+In this demonstration, we will show how \sys can be used to declaratively implement and execute
+\ewu{several existing data cleaning pipelines}.   We will provide a web-based dashboard that
+can be used to specify data-cleaning pipelnies; compile them into physical cleaning plans; and finally inspect, configure, or swap 
+particular physical operators for alternative implementations.  This interaction allows the crowd to 
+act as a human optimizer and inspect the effects of different physical plans.  Users can then
+execute the pipeline over a live crowd that uses the audience as workers, or a simulated crowd
+that uses pre-collected crowd responses.    The dashboard also provides a live inspection
+interface to view the status of the cleaning plan as it executes \ewu{Describing how to do this may be interesting.}
+
+
+
+
+\if{0}
+
 Cleaning, pre-processing, and formatting data is a required first step in any data analytics pipeline.
 However, despite this importance, large-scale data analytics platforms such as Spark or Hadoop lack integrated data cleaning frameworks.
 There are a few challenges in building a general purpose data cleaning framework: (1) data cleaning is often
@@ -44,7 +99,7 @@ aggregate query results on a cleaned sample.
 \subsection{Demonstration Scenario}
 \reminder{TODO}
 
-
+\fi
 
 
 
