@@ -29,7 +29,7 @@ R(a_1,...,a_l,\epsilon(R(a)))
 
 \vspace{0.5em}
 
-\noindent \textsf{TransitiveClosure(R,$f$)}: For a given relation of pairs of rows from the same base relation, e.g the result of a self-Similarity Join, $R(a_1,...,a_l, b_1,...,b_l)$ return the transitive closure of the relation $S(a_1,...,a_l)$. $f$ is called a cannonical representation function, this takes a set of associated records and returns a single record that is designated as the cannonical representation.
+\noindent \textsf{TransitiveClosure(R,$f$)}: For a given relation of pairs of rows from the same base relation, e.g the result of a self-Similarity Join, $R(a_1,...,a_l, b_1,...,b_l)$ return the transitive closure of the relation $S(a_1,...,a_l)$. $f$ is called a cannonical representation function, this takes a set of associated records and returns a single record that is designated as the canonical representation.
 
 \vspace{1em}
 
@@ -55,15 +55,15 @@ only highlight the main features.
 The user can select one of these similarity functions.
 A naive implementation of a Similarity Join is to take the cartesian product and then filter all pairs of record of similarity greater than $t$.
 However, the implemented similarity functions are all symmetric and the similarity function is maximized when $r = p$.
-So it suffices to compute a similarity $\theta$-join instead of the full cartesian product.
+So it suffices to compute a similarity $\theta$-join instead of the full Cartesian product.
 We can further add an optimization called prefix filtering to further reduce the number of similarity function evaluations.
 In prefix filtering, we prune pairs that cannot possibly meet the threshold $t$ based on the number of tokens that overlap which can be determined with an inverted index.
 
 \subsection{Sampling}
 \projx provides different variants of uniform sampling.
-We provide Bernouilli sampling (in which flips a ``biased coin" for each row) or hash sampling (which hashes an attribute).
+We provide Bernoulli sampling (in which flips a ``biased coin" for each row) or hash sampling (which hashes an attribute).
 Hash sampling allows for joining sampled relations with foreign key relationships.
-On the other hand, Bernouilli sampling is less sensitive to skews and leads to more consistent sample sizes.
+On the other hand, Bernoulli sampling is less sensitive to skews and leads to more consistent sample sizes.
 
 \subsection{Transitive Closure}
 Similarity Joins can create issues with transitivity.
@@ -75,7 +75,7 @@ We apply a distributed using a distributed gather-apply-scatter connected compon
 \subsection{Extraction}
 We implement basic automated extraction libraries including delimited splitting and regular expression methods.
 However, extraction is a task that is well suited for crowd sourcing.
-We provide a parameterized interface that allows the user to specify an extraction attribute, a formatting question, and request data from the crowd.
+We provide a parametrized interface that allows the user to specify an extraction attribute, a formatting question, and request data from the crowd.
 In Figure \ref{fig:entry}, we illustrate an example of this task.
 
 \begin{figure}[ht!]

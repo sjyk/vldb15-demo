@@ -1,8 +1,8 @@
 \section{Introduction}\label{sec:intro}
 Cleaning, pre-processing, and formatting data is a required first step in any data analytics pipeline.
-However, depite this importance, large-scale data analytics platforms such as Spark or Hadoop lack integrated data cleaning frameworks.
+However, despite this importance, large-scale data analytics platforms such as Spark or Hadoop lack integrated data cleaning frameworks.
 There are a few challenges in building a general purpose data cleaning framework: (1) data cleaning is often
-domain specific and requires specialized software targetted at one or a handful of data sources \cite{wang1999sample}, (2) data cleaning is often 
+domain specific and requires specialized software targeted at one or a handful of data sources \cite{wang1999sample}, (2) data cleaning is often 
 expensive as it increasingly involves human effort via crowdsourcing or experts \cite{DBLP:conf/sigmod/GokhaleDDNRSZ14}, and (3) learning how to clean dirty data from examples
 is often hard without a greatly restricted set of operators \cite{DBLP:conf/uist/GuoKHH11}.
 
@@ -12,7 +12,7 @@ We interface these primitives through a DSL with which a user can build data cle
 \projx provides transparent optimizations for each of the components and their composition.
 In this demonstration proposal, we present \projx and highlight some of its key features.
 While there are many existing systems that do one aspect of data cleaning and transformation (e.g Entity Resolution or Extraction), 
-many real world data cleaning tasks have mutliple types of errors.
+many real world data cleaning tasks have multiple types of errors.
 Composing disparate systems can lead to complex code and inefficiencies at scale.
 With \projx, we hope to design a set of optimized composable primitives that span a large space of data cleaning tasks.
 
@@ -24,7 +24,7 @@ However, in \projx, we provide optimized implementations of certain common simil
 a combined broadcast join and prefix filtering which intelligently skips pairs of records using a broadcasted inverted index.
 
 Another feature of \projx is managing the latency and the scale problems of crowd-based data cleaning. 
-Crowdsourcing is increasingly prevelant in data cleaning, and \projx provides physical crowd-based implementations
+Crowdsourcing is increasingly prevalent in data cleaning, and \projx provides physical crowd-based implementations
 of the logical operators.
 However, crowds work at a different latency and scale point in comparison to distributed analytics platforms.
 To address the latency problem, we build asychrony into the system.
