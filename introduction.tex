@@ -1,5 +1,9 @@
 \section{Introduction}\label{sec:intro}
+\jn{Honestly, I didn't quite buy declarativity of the system. In my opinion, data cleaning is so domain specific. It's hard to make it declarative. For a given domain, people may need to write their own data cleaning system. There is a lack of a data cleaning framework that they can build based on. This motivates us to develop such framework. 
 
+We analyze a large variety of domain specific data cleaning systems, and identify several key components: declarative data cleaning operators (e.g., similarity joins), active learning, and crowd/expert sourcing platforms that they require. In our framework, we abstract these components, and implement them in a general way. 
+
+We mainly address two challenges: extensibility and scalability. For the former one, we came up with a nice data-cleaning pipeline API, which people can easily use to compose their own data cleaning tasks. For the latter one, we address it in two aspects: Sampling + Asynchrony.}
 
 Today's organizations are driven by injesting and generating data from many external and internal sources,
 and combining them together to build complex models, or answer analytical questions.  In most cases, these
@@ -8,7 +12,7 @@ e.g., data extraction, re-formatting, identification and fixes of missing or inc
 and removal of redundant information -- before the data is useable by downstream processes.
 The prevalance of data cleaning systems in both the research and industrial communities --
 Corleone does blah, XXX addresses blah. Nadeef does blah -- speak to the importance of a
-data cleaning framework as part of the modern big data ecosystems. \ewu{include open access of data in argument?}
+data cleaning framework as part of the modern big data ecosystems. \ewu{include open access of data in argument?} \jn{We also need to take a look at data cleaning systems in industry. }
 
 Unfortunately, existing work has focused on narrow data cleaning systems, and 
 there lacks a general, declarative, and scalable data cleaning framework that can be easily extended to new
@@ -18,7 +22,7 @@ systems don't fully address them}
 In contrast, our work is based on the observation that the majority of data cleaning workflows
 can be decomposed into a small set of logical operations (in addition to traditional database operators):
 filter based on constraints, extract new fields from existing data, and a similarity join to match
-similar or duplicate records. \ewu{quickly validate why this observation holds.}   
+similar or duplicate records. \ewu{quickly validate why this observation holds.} \jn{Yes! I also found that Sec 2.3 has more operators than you describe here.}  
 By designing a system around these core operators, we can provide a vast library of physical  
 data cleaning operators that span the range of algorithmic, machine learning, and human computation-based
 implementations that are necessary practical data cleaning pipelines.   \ewu{Describe live inspection as 
