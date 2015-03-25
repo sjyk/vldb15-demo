@@ -1,3 +1,44 @@
+\section{Challenges}
+Developing \projx system poses significant challenges in both research and engineering. In this section, we will highlight these challenges, and present our ideas to address them.
+
+\subsection{Research Challenges}
+
+
+
+\subsubsection{Instant Feedback Loops}
+
+Since data cleaning processing is often time consuming, to avoid users to feel ``left in the dark" during the process, our system can provide instant feedback loops and make users to get a sense that how data cleaning will change the data and affect the analysis results. We achieve this goal by the following two ideas. 
+
+\vspace{.5em}
+
+{\noindent \bf Sampling-and-Cleaning:} \projx allows users to clean a small sample of data, which is typically much cheaper and faster than cleaning the entire data. With the cleaned sample, the system is able to inform users the changes of their original analysis results, with the help of new query processing methods on dirty data~\cite{wang1999sample}. To be specific, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
+
+\vspace{.5em}
+{\noindent \bf Asynchronous Data Cleaning:} Even cleaning a sample of data, data cleaning can still take a lot of time. This is especially true when it requires humans to clean the data. 
+
+
+
+
+
+
+\subsubsection{Hot Swapping Support}
+
+{\noindent \bf Physical Operators:}
+
+\vspace{.5em}
+
+{\noindent \bf Parameters:}
+
+
+
+
+
+\subsection{Engineering Challenges}
+\subsubsection{API Design}
+
+\subsubsection{Crowdsourcing Platform}
+
+\iffalse
 \subsection{Research Challenges}
 
 Architecturally, we separate crowd sourcing and automated data cleaning.
@@ -63,5 +104,6 @@ This allows us to apply operations like transitive closure even after projection
 We first apply an \textsf{Extract} operation to extract the unstructured data into columns. If some of the columns are inconsistent in their representation,
 we apply \textsf{Project} to those columns that are inconsistent. We can then take a \textsf{SimilarityJoin} to group rows that are similar, and finally
 we resolve those differences with \textsf{TransitiveClosure}.
+\fi
 
 
