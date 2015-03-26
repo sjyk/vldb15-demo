@@ -53,6 +53,17 @@ inspect the quality of the cleaned results, and easily change the
 pipeline or the parameters of the cleaning operators on the fly.
 To do so, h
 
+
+In this demonstration, we will show how \sys can be used to declaratively implement and execute
+\ewu{several existing data cleaning pipelines}.   We will provide a web-based dashboard that
+can be used to specify data-cleaning pipelnies; compile them into physical cleaning plans; and finally inspect, configure, or swap 
+particular physical operators for alternative implementations.  This interaction allows the crowd to 
+act as a human optimizer and inspect the effects of different physical plans.  Users can then
+execute the pipeline over a live crowd that uses the audience as workers, or a simulated crowd
+that uses pre-collected crowd responses.    The dashboard also provides a live inspection
+interface to view the status of the cleaning plan as it executes \ewu{Describing how to do this may be interesting.}
+
+
 %Our contributions/requirements
 %different ways to tighten the feedback loop:
 %end-to-end latency/cost (operator optimization)
@@ -101,14 +112,6 @@ version is to implement the core mechanisms for declarative specification of the
 data cleaning pipeline, solidify the API design, and incle support for, and implementations of,
 multiple classes of physical data cleaning operators.
 
-In this demonstration, we will show how \sys can be used to declaratively implement and execute
-\ewu{several existing data cleaning pipelines}.   We will provide a web-based dashboard that
-can be used to specify data-cleaning pipelnies; compile them into physical cleaning plans; and finally inspect, configure, or swap 
-particular physical operators for alternative implementations.  This interaction allows the crowd to 
-act as a human optimizer and inspect the effects of different physical plans.  Users can then
-execute the pipeline over a live crowd that uses the audience as workers, or a simulated crowd
-that uses pre-collected crowd responses.    The dashboard also provides a live inspection
-interface to view the status of the cleaning plan as it executes \ewu{Describing how to do this may be interesting.}
 
 \fi
 
