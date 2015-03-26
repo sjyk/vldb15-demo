@@ -8,16 +8,15 @@
 % Genereal comment that data cleaning is important:
 %
 Dealing with dirty data is a fundamental barrier in modern data-driven applications -- 
-blindly using results that are derived from dirty data, such as machine learning models 
-or analytical queries, can contain hidden, yet significant, errors.
+blindly using results that are derived from dirty data can lead to hidden, yet significant, errors.
 To combat dirty data, analysts can easily spend 80\% or more of their analysis 
 time~\cite{kandel2012} attempting to identify and understand the data errors, 
-while concurrently building custom scripts or large data cleaning pipelines 
+while concurrently building and iteratively refining custom scripts or large data cleaning pipelines 
 in order to manage and fix the errors.  
 
 Removing data errors from even a single dataset is 
 time consuming is due to the breadth of possible errors that are manifest in the data,
-the variety of ways to clean the data, and the application's resilience to dirty data.
+the variety of ways to clean the data, and the dependent on the specific application.
 For example, sample-and-clean techniques can compensate for bias in aggregation query 
 results without needing to clean the entire dataset, extracting and de-duplicating
 restaurant listings for a consumer facing website requires cleaning the entire dataset.
@@ -59,6 +58,18 @@ data cleaning systems in order to clean their data.
 These existing limitations suggest the need for a system that is both general enough to
 adapt to a wide range of data cleaning applications, scalable to large datasets, 
 and that natively supports high-feedback interactions to enable rapid data cleaning iterations.
+
+\ewu{add a point about optimization}
+
+% move sanjay's stuff to beginning of research challenges
+% sanjay addes couple words about correctness of hot swapping
+% jn cuts sample-and-clean
+% dan/sanjay look over contributions in intro
+
+
+% wrangler: helps construct data pipeline
+%           doesn't optimize in a task psecific way, 
+%           is'nt general data pipeline
 
 To this end, we are currently building \sys, a scalable data cleaning
 framework designed with rapid feedback in mind.  Our goal is to
