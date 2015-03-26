@@ -2,59 +2,80 @@
 
 % why feedback loops exist/are important (cite Joe’s shit in the past 3 years, blinkdb, etc.). highlight domain specificity. Large variety of data cleaning tasks
 
-Modern data-driven organizations rely on the ability to ingest and generate large data sets from 
-disparate sources, and combine the data together to build complex models or answer analytical questions.  
-For example, a restaurant review website may collect restaurant listings by scraping data from webpages or purchasing them from external sources, and
-restaurant visitation information for sources such as OpenTable or FourSquare, and aggregate the data to
-model user eating habits.  
-The set of cleaning tasks necessary for each of these data sources is highly domain and application specific,
-and oftentimes the developer is concurrently trying to clean the data source as well as understand its properties.
+%
+% Genereal comment that data cleaning is important:
+%
+Dealing with dirty data is a fundamental problem in modern data-driven applications -- without 
+ensuring that a dataset is sufficiently error free, derived results (e.g., machine learning models or
+analyst queries) can potentially contain significant errors that result in poor buisiness decisions that
+the analyst is not even aware about!
+Due to these risks of directly using dirty datasets, analysts easily spend 80\% or more of their analysis 
+time~\cite{kandelvast} trying to identify and understand the data errors, while concurrently building custom scripts 
+or large data cleaning pipelines in order to manage and fix the errors.  
 
 
-Oftentimes, these data sources have data quality issues that require a complex data cleaning pipeline -- 
-e.g., data extraction, re-formatting, identification and fixes of missing or incorrect values,
-and removal of redundant information -- before the data is useable by downstream processes.
-Data sources are often domain specific and new for the data analyst, 
-As datasets continue to grow, and organizations make use of mure and more datasets, the ability to
-rapidly clean the data is more important.  
+One reason why removing data errors is so time consuming is that
+the types of errors, the appropriate cleansers, as well as the
+extent that they need to be fixed, is highly domain-specific.  For
+example, \ewu{examples}.  In addition these could originate from
+an internal or external data source, or be introduced as part of
+earlier data curation steps~\cite{}.  Thus, as the size and number
+datasets used for analysis continue to grow, the ability to rapidly
+clean the data is increasingly critical.
+
 
 %The prevalance of data cleaning systems in both the research and industrial communities --
 %Corleone does blah, XXX addresses blah. Nadeef does blah -- speak to the importance of a
 %data cleaning framework as part of the modern big data ecosystems. \ewu{include open access of data in argument?} \jn{We also need to take a look at data cleaning systems in industry. }
 
 
-% why existing systems suck:
+% why existing systems suck aka related work
 % 1. have slow feedback loops (dataset-dependence, …)
 % 2. solve very specific data-cleaning tasks
-Existing data cleaning systems in both research and industry.  
-Early on, ETL systems such as~\cite{informatica,talend} required long batch jobs and 
-huge programmer effort.   Iterative and visual approaches have recently 
-proposed~\cite{wrangler,trifacta,googlerefine} spreadsheet-style interfaces that 
-enable the user to both inspect the dataset and compose data cleaning sequences using a 
-direct manipulation interface.   More recently, a number of automated~\cite{ajax} and crowd-based~\cite{corleone}
-have been proposed for \ewu{blah}.
+The problem of data cleaning is not new -- data cleaning systems have been
+explored by both the research and industry communities since the beginning of data management.
+Early on, extract-transform-load (ETL) systems~\cite{informatica,talend}\ewu{need refs}
+were designed to be labor intensive -- developers manually wrote data cleaning rules which were executed as 
+long batch jobs\ewu{is there a hadoop-era ETL ref?}.  Projects such as Wrangler~\cite{wrangler,trifacta} and
+OpenRefine~\cite{googlerefine} observed that data cleaning is highly iterative.  
+These systems introduced user-oriented spreadsheet-style interfaces that 
+enable the user to inspect a sample of the dataset, compose data cleaning sequences using a 
+direct manipulation interface, and apply these sequences over the full dataset.   
+More recently, a number of crowd-based~\cite{corleone,tamr}
+systems have been proposed to reduce the burden of performing the manual cleaning tasks from the data cleaning analyst 
+by utilizing crowd workers on systems such as Mechanical Turk or ODesk~\cite{argonaut}.
 
-Unfortunately, as the number and size of the data sources continues to grow, these existing systems 
-will fail in two key ways.  First, the batch oriented approaches result in a high latency feedback loop 
-and ultimately affects programmer productivity.  Second, the existing iterative systems approach 
-are designed for a specialized cleaning task (such as deduplication of BLAH), and may not apply nor be sufficient across
-data sources and domains.
+Unfortunately, these systems will be challenged to scale towards increasing varieties of data sources
+and data volumes due to two key limitations.  First, the batch oriented systems result in a very slow feedback loop 
+that inhibits the user's ability to rapidly prototype different data cleaning solutions (e.g., tweak and 
+try different similarity metrics or sampling techniques based on current data cleaning results).
+Second, the existing interactive and iterative systems are designed for very specific cleaning tasks 
+(e.g., deduplication~\cite{corleone}\ewu{add more examples}).  Each system may not apply, nor be sufficient, across
+a large varietiy of data sources or analysis domains.
 These existing limitations suggest the need for a system that is both general enough to
-adapt to a wide range of data cleaning applications, and that natively supports
-high-feedback interactions to enable rapid data cleaning iterations..
+adapt to a wide range of data cleaning applications, scalable to large datasets, 
+and that natively supports high-feedback interactions to enable rapid data cleaning iterations.
 
-
-To this end, we propose and are building \sys, a scalable data
-cleaning framework designed around a tight feedback loop between
+To this end, we are currently building \sys, a scalable data
+cleaning framework designed to facilitate a tight feedback loop between
 the user and the data cleaning system.  Our goal is to facilitate
 a highly interactive ``rinse-and-repeat'' form of data cleaning
 where the user can easily prototype a data-cleaning workflow, quickly
 inspect the quality of the cleaned results, and easily change the
 pipeline or the parameters of the cleaning operators on the fly.
-To do so, h
+Data cleaning domain specific language, optimizations, and careful interaction with crowds.
+Describe engineering challenges, and core operators that enable optimization.
 
+\sys introduces a number of interesting research challenges, which we characterize into two categories:
+{\it instance feedback loops} and 
+{\it hot swapping support}.  The former focuses on techniques that aggressively reduce
+end-to-end data cleaning execution latency (including crowdsourcing latency), and
+sampling and introspection mechanisms to quickly examine the progress and quality of a 
+data cleaning pipeline.  The latter introduces mechanisms to reconfigure data cleaning
+operators and parameters, as well as a recommender that allows \sys, with little user input,
+to self-optimize the data cleaning plan for latency or quality.  For some cleaning plans, \sys can additionally provide equivalence guarantees.
 
-In this demonstration, we will show how \sys can be used to declaratively implement and execute
+In this demonstration, we will illustrate how \sys can be used to implement and execute
 \ewu{several existing data cleaning pipelines}.   We will provide a web-based dashboard that
 can be used to specify data-cleaning pipelnies; compile them into physical cleaning plans; and finally inspect, configure, or swap 
 particular physical operators for alternative implementations.  This interaction allows the crowd to 
@@ -169,4 +190,29 @@ aggregate query results on a cleaned sample.
 
 
 
+\if{0}
+Consider for example, the ability to rapidly understand the types of errors that are present, as well as prevalance of 
+these errors is cruicial.
 
+
+
+Before an organization can use a new dataset as part of their analysis pipeline
+(e.g., to build complex learning models or answer analyst queries)
+the errors in the dataset need to be removed in order to ensure accurate conclusions.  
+
+Modern data-driven organizations rely on the ability to ingest and generate large data sets from 
+disparate sources, and combine the data together to build complex models or answer analytical questions.  
+For example, a restaurant review website may collect restaurant listings by scraping data from webpages or purchasing them from external sources, and
+restaurant visitation information for sources such as OpenTable or FourSquare, and aggregate the data to
+model user eating habits.  
+The set of cleaning tasks necessary for each of these data sources is highly domain and application specific,
+and oftentimes the developer is concurrently trying to clean the data source as well as understand its properties.
+
+
+Oftentimes, these data sources have data quality issues that require a complex data cleaning pipeline -- 
+e.g., data extraction, re-formatting, identification and fixes of missing or incorrect values,
+and removal of redundant information -- before the data is useable by downstream processes.
+Data sources are often domain specific and new for the data analyst, 
+As datasets continue to grow, and organizations make use of mure and more datasets, the ability to
+rapidly clean the data is more important.  
+\fi
