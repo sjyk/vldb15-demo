@@ -7,19 +7,19 @@ Figure~\ref{fig:arch} depicts the system architecture.
 \begin{figure*}[ht]
 \centering
 \includegraphics[width = \textwidth]{figs/architecture.png}
-\caption{\sys system architecture.}
+\caption{\sys system architecture, with an example entity resolution pipeline.}
 \label{fig:arch}
 \end{figure*}
 
 \subsection{Architecture Overview}
 The \sys architecture is focused on providing UI, language, and systems tools for building pipelines for data cleaning. 
 Users interact with the system through the pipeline UI, which allows them to compose data cleaning workflows from modular operators.
-These pipelines are compiled down to expressions in our data cleaning language (section~\ref{sec:dsl}), then compiled into physical cleaning plans.
-In addition, as data cleaning executes, users can interact with the pipelines via tight feedback loops in two forms.
+These pipelines are synthesized as expressions in our data cleaning language (section~\ref{sec:dsl}), then compiled into physical cleaning plans.
+As data cleaning executes, users can interact with the pipelines via tight feedback loops in two forms.
 First, users can issue queries and observe approximate results based on the data that has been cleaned thus far.
 Second, users can pick from a set of recommended modifications to their pipeline (for example, making a similarity join more permissive) and modify the data cleaning in-flight by \textit{hot-swapping} components of the pipeline.
 Data is stored in a relational engine that tracks pipeline lineage with each tuple in order to enforce the semantics of hot-swapping correctly on in-flight tuples.
-Logical cleaning operators may have a number of physical implementations.
+Logical cleaning operators may have a number of physical implementations (section~\ref{sec:operators}).
 Automated rule-based or learning-based operators leverage Spark and MLLib for efficient distributed computation, and operators that require human intervention call out to \sys's crowd manager API, which renders data cleaning tasks and displays them to crowd workers across multiple crowds (e.g., Amazon Mechanical Turk) for processing.
 
 \subsection{Cleaning DSL}
@@ -46,7 +46,11 @@ val rddA = spark.textFile(file).toSchemaRDD
 val cleanData = clean(rddA,<expression>)
 \end{lstlisting}
 
+\subsection{Cleaning Operators}
+\label{sec:operators}
+\sys supports a small set of operators that can express a wide variety of common data cleaning workflows. For example, the pipeline depicted in in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). Additional operators include Extraction, Sampling, and Active Learning.
 
+Individual logical operators have multiple physical implementations, each with its own cost, latency, and accuracy profile. For example, crowd-based implementations tend to be high cost, high latency, and high accuracy, whereas rule-based implementations tend to be low cost, low latency, and low accuracy. The \texttt{with} clause of our data cleaning language allows users to explicitly specify desired physical operators, and \sys's recommendation engine provides actionable suggestions for modifying the pipeline to navigate the tradeoff space.
 
 
 
