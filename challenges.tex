@@ -7,27 +7,39 @@ Developing \projx system poses significant challenges in both research and engin
 
 \subsubsection{Instant Feedback Loops}
 
-Since data cleaning processing is often time consuming, to avoid users to feel ``left in the dark" during the process, our system can provide instant feedback loops and make users to get a sense that how data cleaning will change the data and affect the analysis results. We achieve this goal by the following two ideas. 
+Since data cleaning processing is often time consuming, to avoid users to feel ``left in the dark" during the process, our system can provide instant feedback loops and make users to get a sense that how data cleaning will change the data and affect the analysis results. We achieve this goal based on the following three ideas. 
 
 \vspace{.5em}
 
-{\noindent \bf Sampling-and-Cleaning:} \projx allows users to clean a small sample of data, which is typically much cheaper and faster than cleaning the entire data. With the cleaned sample, the system is able to inform users the changes of their original analysis results, with the help of new query processing methods on dirty data~\cite{wang1999sample}. To be specific, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
+{\noindent \bf Sampling-and-Cleaning:} \projx allows users to clean a small sample of data, which is typically much cheaper and faster than cleaning the entire data. With the cleaned sample, the system is able to inform users the changes of their original analysis results, with the help of new query processing methods for dirty data~\cite{wang1999sample}. For example, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
 
 \vspace{.5em}
-{\noindent \bf Asynchronous Data Cleaning:} Even cleaning a sample of data, data cleaning can still take a lot of time. This is especially true when it requires humans to clean the data. 
+{\noindent \bf Crowdsourcing and Active Learning:} Our second idea to provide instant feedbacks is to reduce the running time of data cleaning operations. We find that many data cleaning operations (e.g., entity resolution~\cite{DBLP:journals/pvldb/YakoutENOI11}, data repairing~\cite{DBLP:journals/pvldb/MozafariSFJM14} require to use active learning to train a machine learning model from the crowd, and then apply the model to clean the data. The completion time of the process largely depends on how fast to get labels from the crowd. A naive implementation is to send a set of tasks to a crowdsourcing platform, and allow arbitrary crowd workers to label them. This method can be very slow since in a real-world crowdsourcing platform, it is very likely that there are some workers who do tasks much slower than others. When such workers are doing our labeling tasks, we have to wait a lot of time until they finish. In the active learning component of our system, we address this problem by maintaining a pool of crowd workers and keeping track of the characteristics (i.e., quality and speed) of each worker in the pool. We develop a task routing strategy that can avoid assigning tasks to slow workers and significantly reduce the time that is required to train a machine learning model from the crowd.
+
+
+
+\vspace{.5em}
+{\noindent \bf Asynchronous Data Cleaning:} To provide more fine-grained feedbacks during a data cleaning process, our system allows users to execute a data cleaning operation asynchronously. The benefit of this feature is that users can monitor how data cleaning will change the data progressively. For example, suppose a user specifies an entity resolution operation that uses active learning to train a classifier to detect duplicates in a dataset. Since active learning is an iterative learning process, in each iteration it can train a classifier. With the asynchrony feature of our system, users can monitor the varying performance of the classifier, which enables them to have a better understanding of the cleaning process.
+
+
+%Even cleaning a sample of data, data cleaning can still take a lot of time. This is especially true when it requires humans to clean the data. 
 
 
 
 
 
 
-\subsubsection{Hot Swapping Support}
+\subsubsection{Hot Swapping}
+Data cleaning is often domain-specific. It's hard to have a general data-cleaning pipeline with fixed parameters and physical operations that works well for any given dataset. Therefore, it is very common that people apply a data-cleaning pipeline to a dataset and then realize the cleaning results does not satisfy their requirements (e.g.,  some part of the data is mistakenly cleaned or a certain type of data error is not captured). In this situation, they would like to modify the data-cleaning pipeline, by adjusting parameters or replacing one physical operation with another, and then apply the new pipeline to clean the data. The idea of hot swapping is to make this process efficient without incurring the overhead of re-executing the entire pipeline. In the following, we will briefly how our system can efficiently support the hot swapping, and how to recommend suitable parameters and physical operations for users to swap. 
 
-{\noindent \bf Physical Operators:}
 
 \vspace{.5em}
 
-{\noindent \bf Parameters:}
+{\noindent \bf Mechanism:} storage and lineage
+
+\vspace{.5em}
+
+{\noindent \bf Policy:} some fancy algorithms
 
 
 
