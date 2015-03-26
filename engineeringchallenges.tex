@@ -1,4 +1,39 @@
 \subsection{Engineering Challenges}
+In addition to the numerous research challenges, there have been substantial challenges in engeering \sys.
+We highlight two key challenges which are API design and Crowdsourcing.
+
 \subsubsection{API Design}
+Many of the research challenges in \sys rely on clear specifications of the input and output behaviors of
+the data cleaning operators.
+For example, Hot Swapping, is only possible if two physical operators have exactly the same input and output specification.
+The engineering challege to to retain modularity and extensibility while restricting operators.
+We build a class heirarchy of data cleaning operators which through inheritance and parameterization specify clear input and output behaviors.
+
+One example of this is the Similarity Join operator.
+Users might chose complex similarity functions making it hard to understand their semantics for optimization.
+We abstract the similarity function into a abstract class called a \textsf{SimilarityFeature}, this class is parameterized
+by a single threshold, contains an API to specify whether two records are similar based on the threshold, maintains its
+own tokenizer, and has an API to specify available optimization properties such as monotonicity and prefix-filtering.
+So if a user proposes an arbitrary similarity function, as long as it is implemented in the API, it can benefit from our
+parameter tuning recommendations.
+
+One draw back of an extensive API is that the choices may overwhelm a user.
+Many of our API methods and classes come with inherited sensible defaults.
+For example, if the user fails to completely specify the semantics of the similarity function through the API, 
+the system will avoid optimizations and perform a naive cartesian products and filtering.
+These behaviors come naturally through the use of inheritance and polymorphism.
 
 \subsubsection{Crowdsourcing Platform}
+The second engineering challenge is designing a platform to serve crowd tasks.
+First, working with crowds is inherrently challenging.
+Unlike for our automated operators, we have to manage greatly varying crowd worker
+response times and quality.
+We developed a ``crowd server" to add a layer of indirection to support this.
+The crowd server handle serving and processing crowd tasks, including quality control through redudancy.
+We aggregate redundant responses using an Expectation-Maximization algorithm.
+Only after collecting sufficent confidence for a task, we process that tuple in our pipeline.
+
+The other benefit of a crowd server is that the APIs for Amazon Mechanical Turk (AMT), Crowd Flower, and others greatly vary.
+One common feature of these APIs is that they serve tasks through a browser-based interface.
+Our crowd server generates tasks in the form of dynamic web pages and process responses through AJAX call backs.
+As a result, the same server works for a variety of different crowds including AMT, Crowd Flower, and a custom ``Internal Crowd"
