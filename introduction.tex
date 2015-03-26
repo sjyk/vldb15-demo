@@ -1,5 +1,7 @@
 \section{Introduction}\label{sec:intro}
 
+\ewu{Explain \sys name.}
+
 % why feedback loops exist/are important (cite Joe’s shit in the past 3 years, blinkdb, etc.). highlight domain specificity. Large variety of data cleaning tasks
 
 %
@@ -35,9 +37,9 @@ These tasks are infeasible without a general, user-efficient, and scalable data 
 % 2. solve very specific data-cleaning tasks
 The problem of data cleaning is not new -- data cleaning systems have been
 explored by both the research and industry communities since the beginning of data management.
-Extract-transform-load (ETL) systems~\cite{informatica,talend,nadeef}
+Extract-transform-load (ETL) systems~\cite{informatica,talend,nadeef,apachefalcon}
 required developers to manually wrote data cleaning rules which were executed as 
-long batch jobs\ewu{is there a hadoop-era ETL ref?}.  
+long batch jobs.
 Projects such as Wrangler~\cite{wrangler,trifacta} and
 OpenRefine~\cite{openrefine} observed that data cleaning is highly iterative, and
 introduced user-centric spreadsheet-style interfaces that enable the user to inspect a sample of the dataset, 
@@ -64,19 +66,22 @@ engineer a highly interactive form of data cleaning where the user can easily pr
 quickly inspect the quality of the cleaned results at any point in the plan, and seamlessly
 tweak the operators and parameters on the fly.
 
-Supporting these capabilities requires a mixture of careful engineering as well as tackling several research challenges.
+Supporting these capabilities requires a mixture of careful engineering 
+as well as tackling several research challenges.
 
-\begin{enumerate}
+\squishlist
 \item {\bf Operator and API design}: We have designed a core set of logical data cleaning operators --
-filter, similarity join, extract and sample -- and added support for rule-based, machine learning-based, and 
-crowd-sourcing based physical implementations of the operators.  
-This combination of logical and physical designs is expressive enough to implement many~\cite{gokhale2014corleone,stonebraker2013data} 
-existing data cleaning systems.  
+filter, similarity join, extract and sample -- that can be used to
+implement operations such as Blocking, and entity matching.  \sys also supports
+rule-based, machine learning-based, and crowd-sourcing based physical implementations of the operators.  
+This combination of logical and physical designs lets users to easily start the cleaning process
+with standard rule-based algorithms, transition to human-workers for machine-difficult 
+errors, and incrementally build models to automate the cleaning process.  
 In addition, we have developed a large library of common implementations of 
 each logical operator that can be easily tuned and used out of the box, as well as a crowd-managment 
 framework that supports multiple crowd-sourcing platforms such as Mechanical Turk and ODesk.
 
-\item {\it Near-instant feedback}: We are investigating multiple approaches to reduce the 
+\item {\bf Near-instant feedback}: We are investigating multiple approaches to reduce the 
 feedback loop throughout the system.  First, nteracting with a crowd is commonly the primary latency bottleneck,
 and we are studying techniques such as straggler mitigation~\cite{venkataraman2014power}, worker latency modeling, and
 bandit algorithms~\cite{}\ewu{DAN FILL THIS} to consistently and cost effectively retrive crowd results in seconds rather than hours. 
@@ -84,14 +89,14 @@ Second, minimizing the time for the {\it first} end-to-end cleaning result is ar
 end-to-end latency for cleaning the entire dataset.    We are studying techniques to pick samples that are
 most likely to be cleaned by the plan (and consequently be interesting to the user.)
 
-\item {\it Hot Swapping}: In contrast to batch-oriented data cleaning, rapid iteration necessitates the
+\item {\bf Hot Swapping}: In contrast to batch-oriented data cleaning, rapid iteration necessitates the
 ability to tune an operator parameter or reconfigure the sequence of cleaning operators as the cleaning
 plan is running.   We are also studying the conditions for when the partial results for one
 cleaning plan can be safely used in a similar but reconfigured plan.  We are using this hot-swapping primitive
 to implement a cleaning plan optimizer that continually refines the cleaning plan based on user-defined latency-quality
 tradeoffs.
 
-\end{enumerate}
+\squishend
 
 
 In this demonstration, we will run an entity resolution plan on two restaurant datasets, and
