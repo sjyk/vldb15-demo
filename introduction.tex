@@ -5,13 +5,14 @@
 %
 % Genereal comment that data cleaning is important:
 %
-Dealing with dirty data is a fundamental problem in modern data-driven applications -- without 
-ensuring that a dataset is sufficiently error free, derived results (e.g., machine learning models or
-analyst queries) can potentially contain significant errors that result in poor buisiness decisions that
+Dealing with dirty data is a fundamental problem in modern data-driven applications -- blindly using
+results (e.g., machine learning models or analyst queries) derived from dirty data can 
+potentially contain significant errors that result in poor buisiness decisions that
 the analyst is not even aware about!
-Due to these risks of directly using dirty datasets, analysts easily spend 80\% or more of their analysis 
+Due to this risk of directly using dirty datasets, analysts easily spend 80\% or more of their analysis 
 time~\cite{kandelvast} trying to identify and understand the data errors, while concurrently building custom scripts 
 or large data cleaning pipelines in order to manage and fix the errors.  
+
 
 
 One reason why removing data errors is so time consuming is that
@@ -56,33 +57,52 @@ These existing limitations suggest the need for a system that is both general en
 adapt to a wide range of data cleaning applications, scalable to large datasets, 
 and that natively supports high-feedback interactions to enable rapid data cleaning iterations.
 
-To this end, we are currently building \sys, a scalable data
-cleaning framework designed to facilitate a tight feedback loop between
-the user and the data cleaning system.  Our goal is to facilitate
-a highly interactive ``rinse-and-repeat'' form of data cleaning
-where the user can easily prototype a data-cleaning workflow, quickly
-inspect the quality of the cleaned results, and easily change the
-pipeline or the parameters of the cleaning operators on the fly.
-Data cleaning domain specific language, optimizations, and careful interaction with crowds.
-Describe engineering challenges, and core operators that enable optimization.
+To this end, we are currently building \sys, a scalable data cleaning
+framework designed with rapid feedback in mind.  Our goal is to
+engineer a highly interactive form of data cleaning where the user can easily prototype a data cleaning execution plan,
+quickly inspect the quality of the cleaned results at any point in the plan, and seamlessly
+tweak the operators and parameters on the fly.
 
-\sys introduces a number of interesting research challenges, which we characterize into two categories:
-{\it instance feedback loops} and 
-{\it hot swapping support}.  The former focuses on techniques that aggressively reduce
-end-to-end data cleaning execution latency (including crowdsourcing latency), and
-sampling and introspection mechanisms to quickly examine the progress and quality of a 
-data cleaning pipeline.  The latter introduces mechanisms to reconfigure data cleaning
-operators and parameters, as well as a recommender that allows \sys, with little user input,
-to self-optimize the data cleaning plan for latency or quality.  For some cleaning plans, \sys can additionally provide equivalence guarantees.
+Supporting these capabilities requires a mixture of careful engineering as well as tackling several research challenges.
 
-In this demonstration, we will illustrate how \sys can be used to implement and execute
-\ewu{several existing data cleaning pipelines}.   We will provide a web-based dashboard that
-can be used to specify data-cleaning pipelnies; compile them into physical cleaning plans; and finally inspect, configure, or swap 
-particular physical operators for alternative implementations.  This interaction allows the crowd to 
-act as a human optimizer and inspect the effects of different physical plans.  Users can then
-execute the pipeline over a live crowd that uses the audience as workers, or a simulated crowd
-that uses pre-collected crowd responses.    The dashboard also provides a live inspection
-interface to view the status of the cleaning plan as it executes \ewu{Describing how to do this may be interesting.}
+\begin{enumerate}
+\item {\bf Operator and API design}: We have designed a core set of logical data cleaning operators --
+filter, similarity join, extract and sample -- and added support for rule-based, machine learning-based, and 
+crowd-sourcing based physical implementations of the operators.  
+This combination of logical and physical designs is expressive enough to implement many~\cite{} existing
+data cleaning systems.  In addition, we have developed a large library of common implementations of 
+each logical operator that can be easily tuned and used out of the box, as well as a crowd-managment 
+framework that supports multiple crowd-sourcing platforms such as Mechanical Turk and ODesk.
+
+\item {\it Near-instant feedback}: We are investigating multiple approaches to reduce the 
+feedback loop throughout the system.  First, nteracting with a crowd is commonly the primary latency bottleneck,
+and we are studying techniques such as straggler mitigation~\cite{poweroftwo}, worker latency modeling, and
+bandit algorithms~\cite{} to consistently and cost effectively retrive crowd results in seconds rather than hours. 
+Second, minimizing the time for the {\it first} end-to-end cleaning result is arguably more important than 
+end-to-end latency for cleaning the entire dataset.    We are studying techniques to pick samples that are
+most likely to be cleaned by the plan (and consequently be interesting to the user.)
+
+\item {\it Hot Swapping}: In contrast to batch-oriented data cleaning, rapid iteration necessitates the
+ability to tune an operator parameter or reconfigure the sequence of cleaning operators as the cleaning
+plan is running.   In addition, we are studying the conditions for when the partial results for one
+cleaning plan can be safely used in a similar but reconfigured plan.  We are using this hot-swapping primitive
+to implement a cleaning plan optimizer that continually refines the cleaning plan based on user-defined latency-quality
+tradeoffs.
+
+\end{enumerate}
+
+
+In this demonstration, we will run an entity resolution plan on two restaurant datasets, and
+show how \sys can be used to 1) specify and execute a data cleaning plan for the first dataset using our domain specific
+language, 2) quickly clean a sample of the first dataset to characterize how data is cleaned
+in the end-to-end plan, 3) apply the cleaning plan to the second dataset and show that the cleaned dataset
+is suboptimal, 4) incrementally refine the plan by changing an operator's parameter (e.g., similarity threshold)
+or its physical implementation.
+The fourth interaction lets the participants act as a human optimizer and inspect the effects of different physical plans.
+Users can then execute the plan over a live crowd that uses the audience as workers, or a simulated crowd
+that uses pre-collected crowd responses.    The dashboard (Figure~\ref{screenshot-rec} also provides a live inspection
+interface to view the status of the cleaning plan as it executes.
+
 
 
 %Our contributions/requirements
