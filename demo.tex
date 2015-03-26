@@ -61,6 +61,23 @@
 }
 \fi
 
+\newcommand{\squishlist}{
+   \begin{list}{$\bullet$}
+    { \setlength{\itemsep}{0pt}
+      \setlength{\parsep}{2pt}
+      \setlength{\topsep}{6pt}
+      \setlength{\partopsep}{0pt}
+      \leftmargin=5pt
+\rightmargin=0pt
+\labelsep=5pt
+\labelwidth=10pt
+\itemindent=0pt
+\listparindent=0pt
+\itemsep=\parsep
+    }
+}
+\newcommand{\squishend}{\end{list}}
+
 
 %Identifying Similarity Functions from Examples for Effective Record Matching
 
@@ -172,7 +189,7 @@
 
 {
 \bibliographystyle{abbrv}
-%\fontsize{7pt}{7.9pt} \selectfont
+\fontsize{7pt}{7.9pt} \selectfont
 \bibliography{refs/bigdata}
 }
 

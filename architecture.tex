@@ -1,22 +1,29 @@
+% !TEX root = demo.tex
 \section{System Architecture}
 
-In this section, we provide a brief overview of \sys and how it fits into
-the AMPLab big data stack.
-The subsequent sections describe the logical operators, the cleaning language,
-and the implementation details, including the physical operator implementations.
+In this section, we provide a brief overview of the \sys system and its APIs.
+Figure~\ref{fig:arch} depicts the system architecture.
 
-Figure~\ref{fig:arch} depicts the highlight system architecture and the API. 
-The left subfigure shows \sanjay{describe query execution flow}.
+\begin{figure*}[ht]
+\centering
+\includegraphics[width = \textwidth]{figs/architecture.png}
+\caption{\sys system architecture.}
+\label{fig:arch}
+\end{figure*}
 
-  \begin{figure}[h]
-  \centering
-  \includegraphics[width = 2.5in]{figs/architecture}
-  \caption{\sys system architecture.}
-  \label{fig:arch}
-  \end{figure}
+\subsection{Architecture Overview}
+The \sys architecture is focused on providing UI, language, and systems tools for building pipelines for data cleaning. 
+Users interact with the system through the pipeline UI, which allows them to compose data cleaning workflows from modular operators.
+These pipelines are compiled down to expressions in our data cleaning language (section~\ref{sec:dsl}), then compiled into physical cleaning plans.
+In addition, as data cleaning executes, users can interact with the pipelines via tight feedback loops in two forms.
+First, users can issue queries and observe approximate results based on the data that has been cleaned thus far.
+Second, users can pick from a set of recommended modifications to their pipeline (for example, making a similarity join more permissive) and modify the data cleaning in-flight by \textit{hot-swapping} components of the pipeline.
+Data is stored in a relational engine that tracks pipeline lineage with each tuple in order to enforce the semantics of hot-swapping correctly on in-flight tuples.
+Logical cleaning operators may have a number of physical implementations.
+Automated rule-based or learning-based operators leverage Spark and MLLib for efficient distributed computation, and operators that require human intervention call out to \sys's crowd manager API, which renders data cleaning tasks and displays them to crowd workers across multiple crowds (e.g., Amazon Mechanical Turk) for processing.
 
-
-\subsection{Language Overview}
+\subsection{Cleaning DSL}
+\label{sec:dsl}
 We provide a language for specifying the composition of data cleaning operators.
 The logical operators define the input and output behavior of the operation and 
 the physical operators specify the implementation.
@@ -25,7 +32,7 @@ The general syntax of this language is:
 <logical operator> on <relations>
 	with <physical operators> , <params>
 \end{lstlisting}
-\ewu{Why or when is WITH clause necessary? }
+
 These expressions are composable:
 \begin{lstlisting}
 R1 := <logical operator> on <relations> 
@@ -40,12 +47,8 @@ val cleanData = clean(rddA,<expression>)
 \end{lstlisting}
 
 
-\subsection{Data and Execution Model}
 
-\team{fill in}
 
-Each operator is treated like a view?
 
-Execution is a tree/graph/line/dag.
 
 
