@@ -4,7 +4,7 @@ The objective of this demonstration is to illustrate
 how \sys can improve iterative process of data analysis.
 Data scientists often have to work with multiple but related dirty datasets.
 If a data scientist optimizes a data cleaning pipeline on one dataset, with \sys 
-she quickly transfer those insights to develop pipeline on the other.
+she quickly transfer those insights to develop a pipeline on the other.
 
 \subsection{Datasets}
 In our demo, we will consider entity resolution tasks in two different restaurant datasets.
@@ -19,6 +19,13 @@ We will use \sys to merge similar categories together and find the top 10 most p
 \centering
  \includegraphics[width=\columnwidth]{figs/dashboard_screenshot.png}
  \caption{A prototype implemenation of our \sys dashboard. The dashboard contains both a visual interface and a text box to specify the data cleaning operation. When the user is satisfied, she can run the pipeline and see the results on the right. \label{screenshot}}\vspace{-1.75em}
+\end{figure}
+
+
+\begin{figure}[t]
+\centering
+ \includegraphics[width=\columnwidth]{figs/dashboard_recsys.png}
+ \caption{A prototype implemenation of our \sys recommender interface. Users can select a pipeline operator to see details which show the parameters of the operator and a set of intermediate results after the operator via lineage. Users can change parameters on the fly and will get notified of recommended changes. \label{screenshot-rec}}\vspace{-1.75em}
 \end{figure}
 
 \subsection{Demo Walkthrough}
@@ -39,8 +46,11 @@ Participants can also add a crowdsourced filtering step in addition to the simil
 
 \vspace{0.5em}
 
-\noindent\textbf{Step 3: } When a participant is satisified with a pipeline, they can hit "Approve" and it will execute the data cleaning. If they chose to use crowdsourcing, then they can complete crowd tasks. The results of the pipeline are visualized in the upper right of our interface.
+\noindent\textbf{Step 3: } When a participant is satisified with a pipeline, they can hit ``Approve" and it will execute the data cleaning. If they chose to use crowdsourcing, then they can complete crowd tasks. The results of the pipeline are visualized in the upper right of our interface.
 We show a representative sample of changed records allowing the partipcant to understand how the cleaning affects the data. 
+Participants can further analyze their pipelines by clicking on an operator (Figure \ref{screenshot-rec}).
+In addition to the parameters, this reveals intermediate results, and recommended changes to the operator.
+For example, in Figure \ref{screenshot-rec}, we show a recommendation to change the similarity metric from Jaccard since the attribute in question does not have many tokens.
 
 \vspace{0.5em}
 
