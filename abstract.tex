@@ -1,9 +1,22 @@
 \begin{abstract}
-Data cleaning is challenging due to domain specificity, scalability, and crowd sourcing.
-We address these challenges \projx, a Spark library of composable and scalable data cleaning primitives.
-\projx abstracts the logical data cleaning operators: Extraction, Similarity Join, Filtering, from the physical implementation i.e, Rule, Crowd, or Machine Learning.
-We interface these primitives through a DSL with which a user can build data cleaning operators that suit their needs.
-\projx provides transparent optimizations for each of the components and their composition.
-The library is available at: \textsf{sampleclean.org}
+Dealing with dirty data is a fundamental barrier in modern data-driven applications -- 
+blindly using results that are derived from dirty data, such as machine learning models 
+or analytical queries, can contain hidden, yet significant, errors.
+To combat dirty data, analysts can easily spend 80\% or more of their analysis 
+time~\cite{kandelvast} attempting to identify and understand the data errors, 
+while concurrently building custom scripts or large data cleaning pipelines 
+in order to manage and fix the errors.   The domain-specificity of data cleaning
+necessitates an interactive feedback loop between the user's changes to the data cleaning 
+pipeline, and the data cleaning results.
+
+Existing data cleaning systems are either batch-oriented processing
+systems that lack interactivity, or interactive systems that are
+designed for a specific data cleaning task (e.g., deduplicating
+\ewu{a specific type of data?}, or finding outliers).  In contrast,
+we have distilled the core components of existing data cleaning
+systems into a small set of logical operators that can be composed
+into a data cleaning plan, and designed a that minimizes the feedback
+loop and supports dynamic reconfiguration while the plan executes.
+The code is available at: \url{http://www.sampleclean.org}.
 \end{abstract}
 
