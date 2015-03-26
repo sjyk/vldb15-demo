@@ -1,7 +1,5 @@
 \section{Introduction}\label{sec:intro}
 
-\ewu{Explain \sys name.}
-
 % why feedback loops exist/are important (cite Joe’s shit in the past 3 years, blinkdb, etc.). highlight domain specificity. Large variety of data cleaning tasks
 
 %
@@ -55,30 +53,21 @@ Second, the existing interactive and iterative systems are designed for very spe
 (e.g., de-duplication~\cite{gokhale2014corleone,park2014crowdfill,eracer,chen2014integrating}) that may not apply to all of the data 
 cleaning operations necessary for a dataset.  The user must then combine and integrate multiple
 data cleaning systems in order to clean their data.
+Third, these systems do not employ task-specific optimizations
+such as tuning similarity threshold parameters or replacing fast-but-inaccurate operators with slower but more accurate ones.
 These existing limitations suggest the need for a system that is both general enough to
 adapt to a wide range of data cleaning applications, scalable to large datasets, 
 and that natively supports high-feedback interactions to enable rapid data cleaning iterations.
 
-\ewu{add a point about optimization}
-
-% move sanjay's stuff to beginning of research challenges
-% sanjay addes couple words about correctness of hot swapping
-% jn cuts sample-and-clean
-% dan/sanjay look over contributions in intro
-
-
-% wrangler: helps construct data pipeline
-%           doesn't optimize in a task psecific way, 
-%           is'nt general data pipeline
-
-To this end, we are currently building \sys, a scalable data cleaning
+To this end, we are currently building \sys\footnote{{\scriptsize \sys uses {\bf C}rowds, {\bf C}ode, and machine {\bf L}earners to deep cleanse dirty data.}}, 
+a scalable data cleaning
 framework designed with rapid feedback in mind.  Our goal is to
 engineer a highly interactive form of data cleaning where the user can easily prototype a data cleaning execution plan,
 quickly inspect the quality of the cleaned results at any point in the plan, and seamlessly
 tweak the operators and parameters on the fly.
 
 Supporting these capabilities requires a mixture of careful engineering 
-as well as tackling several research challenges.
+as well as tackling several research challenges:
 
 \squishlist
 \item {\bf Operator and API design}: We have designed a core set of logical data cleaning operators --
