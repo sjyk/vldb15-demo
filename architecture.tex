@@ -19,7 +19,7 @@ As data cleaning executes, users can interact with the pipelines via tight feedb
 First, users can issue queries and observe approximate results based on the data that has been cleaned thus far.
 Second, users can pick from a set of recommended modifications to their pipeline (for example, making a similarity join more permissive) and modify the data cleaning in-flight by \textit{hot-swapping} components of the pipeline.
 Data is stored in a relational engine that tracks pipeline lineage with each tuple in order to enforce the semantics of hot-swapping correctly on in-flight tuples.
-Logical cleaning operators may have a number of physical implementations.
+Logical cleaning operators may have a number of physical implementations (section~\ref{sec:operators}).
 Automated rule-based or learning-based operators leverage Spark and MLLib for efficient distributed computation, and operators that require human intervention call out to \sys's crowd manager API, which renders data cleaning tasks and displays them to crowd workers across multiple crowds (e.g., Amazon Mechanical Turk) for processing.
 
 \subsection{Cleaning DSL}
