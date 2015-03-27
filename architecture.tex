@@ -13,11 +13,11 @@ Figure~\ref{fig:arch} depicts the system architecture.
 
 \subsection{Architecture Overview}
 The \sys architecture is focused on providing UI, language, and systems tools for building data cleaning plans.
-Users interact with the system through the \textbf{Pipeline UI}, which allows them to compose data cleaning workflows from modular operators.
+Users interact with the system through the \textbf{Planning UI}, which allows them to compose data cleaning workflows from modular operators.
 These workflows are represented as expressions in our data cleaning language (section~\ref{sec:dsl}), then synthesized as data cleaning plans by our \textbf{DSL compiler}.
 As the \textbf{Data Cleaning Plan Executor} executes the compiled plans, users can interact with the plans via tight feedback loops in two ways.
 First, users can issue queries to the \textbf{SAQP module} and observe approximate results based on the data that has been cleaned thus far.
-Second, the \textbf{Recommendation Engine} displays a set of suggested modifications to the active cleaning plan (for example, making a similarity join more permissive) in the Pipeline UI, and users can update the data cleaning plan in-flight by accepting a suggestion and using the \textbf{Hot Swapper} to modify components of the pipeline.
+Second, the \textbf{Recommendation Engine} displays a set of suggested modifications to the active cleaning plan (for example, making a similarity join more permissive) in the \textbf{Planning UI}, and users can update the data cleaning plan in-flight by accepting a suggestion and using the \textbf{Hot Swapper} to modify components of the pipeline.
 Intermediate results and cleaned data are maintained in a \textbf{Lineage and Storage engine} that tracks each tuple's lineage in order to enforce the semantics of hot-swapping correctly on in-flight tuples.
 Logical cleaning operators may have a number of physical implementations (section~\ref{sec:operators}).
 Automated rule-based or learning-based operators leverage Spark and MLLib for efficient distributed computation, and operators that require human intervention call out to \sys's \textbf{Crowd Manager} API, which renders data cleaning tasks and displays them to crowd workers from multiple crowds (e.g., Amazon Mechanical Turk) in a web-based \textbf{Cleaning UI} for processing.
