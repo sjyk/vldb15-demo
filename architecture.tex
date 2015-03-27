@@ -8,7 +8,7 @@ Figure~\ref{fig:arch} depicts the system architecture.
 \centering
 \vspace{-0.5cm}
 \includegraphics[width = .5\textwidth]{figs/architecture.png}
-\vspace{-1cm}
+\vspace{-0.7cm}
 \caption{\sys system architecture, with an example entity resolution plan.}
 \label{fig:arch}
 \end{figure}
@@ -32,7 +32,7 @@ the physical operators specify the implementation.
 The general syntax of this language is:
 \begin{lstlisting}
 <logical operator> on <relations>
-	with <physical operators> , <params>
+  with <physical operators> , <params>
 \end{lstlisting}
 
 These expressions are composable. For example, the following represents the data cleaning plan in Figure~\ref{fig:arch} (an entity resolution plan):
@@ -41,19 +41,15 @@ Filtering on (
     SimilartyJoin on (
         Sampling on BaseTable
         with Uniform)
-    with Jacard, thresh=0.8) 
+    with Jaccard, thresh=0.8) 
 with CrowdDeduplication, numVotes=3
 \end{lstlisting}
-\projx provides an integration layer of these expressions with Scala/Apache Spark allowing for the manipulation of SchemaRDDs (Spark RDDs with additional schema information):
-\begin{lstlisting}
-val rddA = spark.textFile(file).toSchemaRDD
-val cleanData = clean(rddA,<expression>)
-\end{lstlisting}
+Additionally, \sys provides integration of our DSL with Scala/Apache Spark, allowing SchemaRDDs (Spark RDDs with additional schema information) to serve as base tables in expressions.
 
 \subsection{Cleaning Operators}
 \label{sec:operators}
 \sys supports a small set of operators that can express a wide variety of common data cleaning workflows. 
-For example, the pipeline depicted in in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). 
+For example, the pipeline depicted in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). 
 Additional operators include Extraction and Sampling.
 
 Individual logical operators have multiple physical implementations, each with its own cost, latency, and accuracy profile. 
