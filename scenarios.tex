@@ -18,25 +18,25 @@ We will use \sys to merge similar categories together and find the top 10 most p
 \begin{figure}[t]
 \centering
  \includegraphics[width=\columnwidth]{figs/dashboard_screenshot.png}
- \caption{A prototype implemenation of our \sys dashboard. The dashboard contains both a visual interface and a text box to specify the data cleaning operation. When the user is satisfied, she can run the pipeline and see the results on the right. \label{screenshot}}\vspace{-1.75em}
+ \caption{The dashboard contains both a visual interface and a text box to specify the data cleaning operation. When the user is satisfied, she can run the plan and see the results on the right. \label{screenshot}}
 \end{figure}
 
 
 \begin{figure}[t]
 \centering
  \includegraphics[width=\columnwidth]{figs/dashboard_recsys.png}
- \caption{A prototype implemenation of our \sys recommender interface. Users can select a pipeline operator to see details which show the parameters of the operator and a set of intermediate results after the operator via lineage. Users can change parameters on the fly and will get notified of recommended changes. \label{screenshot-rec}}\vspace{-1.75em}
+ \caption{Users can select an operator to modify the parameters. Users can change parameters on the fly and can also see recommended changes. \label{screenshot-rec}}\vspace{-1.75em}
 \end{figure}
 
 \subsection{Demo Walkthrough}
 Now, we will detail the steps of the proposed demonstration.
-A screenshot of our prototype dashboard interface is illustrated in Figure \ref{screenshot}.
+A screenshot of our dashboard interface is illustrated in Figure \ref{screenshot}.
 
 \vspace{0.5em}
 
 \noindent\textbf{Step 1: } We will explain the components of our dashboard interface to the
-demo participants. We will explain how to design data cleaning pipelines with the visual 
-drop down menus, how to compile those pipelines to our DSL, and how to evaluate the results.
+demo participants. We will explain how to design data cleaning plans with the visual 
+drop down menus, how to compile those plans to our DSL, and how to evaluate the results.
 
 \vspace{0.5em}
 
@@ -46,16 +46,16 @@ Participants can also add a crowdsourced filtering step in addition to the simil
 
 \vspace{0.5em}
 
-\noindent\textbf{Step 3: } When a participant is satisified with a pipeline, they can hit ``Approve" and it will execute the data cleaning. If they chose to use crowdsourcing, then they can complete crowd tasks. The results of the pipeline are visualized in the upper right of our interface.
+\noindent\textbf{Step 3: } When a participant is satisified with a plan, they can hit ``Approve" and it will execute the data cleaning. If they chose to use crowdsourcing, then they can complete crowd tasks. The results of the plan are visualized in the upper right of our interface.
 We show a representative sample of changed records allowing the partipcant to understand how the cleaning affects the data. 
-Participants can further analyze their pipelines by clicking on an operator (Figure \ref{screenshot-rec}).
-In addition to the parameters, this reveals intermediate results, and recommended changes to the operator.
-For example, in Figure \ref{screenshot-rec}, we show a recommendation to change the similarity metric from Jaccard since the attribute in question does not have many tokens.
+Participants can further analyze their plan by clicking on an operator (Figure \ref{screenshot-rec}).
+In addition to the parameters, this shows the recommended changes to the operator.
+For example, in Figure \ref{screenshot-rec}, we show a recommendation to change the similarity metric from Jaccard to Edit Distance since the attribute in question does not have many tokens.
 
 \vspace{0.5em}
 
 \noindent\textbf{Step 4: } Participants can then change datasets and observe how the same pipeline would work on another dataset.
-They can modify the pipeline using the visual interface until the results are satisfactory.
+They can modify the plan using the visual interface until the results are satisfactory.
 
 \if{0}
 \subsection{1. Cleaning}
