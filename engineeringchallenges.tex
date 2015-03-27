@@ -3,19 +3,15 @@ In addition to the numerous research challenges, there have been substantial cha
 We highlight two key challenges which are API design and Crowdsourcing.
 
 \subsubsection{API Design}
+Currently, there are many systems that address different types of data error \cite{gokhale2014corleone,park2014crowdfill,eracer,chen2014integrating}, but it is often 
+the case that data are corrupted in multiple ways.
+There is currently no interoperability between these systems, since some are constraint-based, some use generic crowd APIs, and others have custom crowd interfaces.
+In \sys, we address this problem by designing an API that allows for the composition and optimization of data cleaning operators.
 Many of the research challenges in \sys rely on clear specifications of the input and output behaviors of
 the data cleaning operators.
 For example, Hot Swapping, is only possible if two physical operators have exactly the same input and output specification.
 The engineering challege to to retain modularity and extensibility while restricting operators.
 We build a class heirarchy of data cleaning operators which through inheritance and parameterization specify clear input and output behaviors.
-
-One example of this is the Similarity Join operator.
-Users might chose complex similarity functions making it hard to understand their semantics for optimization.
-We abstract the similarity function into a abstract class called a \textsf{SimilarityFeature}, this class is parameterized
-by a single threshold, contains an API to specify whether two records are similar based on the threshold, maintains its
-own tokenizer, and has an API to specify available optimization properties such as monotonicity and prefix-filtering.
-So if a user proposes an arbitrary similarity function, as long as it is implemented in the API, it can benefit from our
-parameter tuning recommendations.
 
 One draw back of an extensive API is that the choices may overwhelm a user.
 Many of our API methods and classes come with inherited sensible defaults.

@@ -1,57 +1,69 @@
 \section{Challenges}
-Developing \projx system poses significant challenges in both research and engineering. In this section, we will highlight these challenges, and present our ideas to address them.
+In this section, we describe some of the research and engineering challenges in developing \sys.
 
 \subsection{Research Challenges}
+Data cleaning is an inherently iterative process where, through trial and error, users optimize a data cleaning workflow and parameters for a specific dataset.
+Iterating over these workflows can be very time consuming and complex to debug (i.e., if one operator uses the crowd).
+Therefore, in our research, we explore two categories of optimizations: (1) intra-operator optimizations and approximations that reduce the latency of individual operators, and (2) plan-level optimizations that allow for asynchrony and mid-execution modification.
 
-
-
-\subsubsection{Instant Feedback Loops}
-
-Since data cleaning processing is often time consuming, to avoid users to feel ``left in the dark" during the process, our system can provide instant feedback loops and make users to get a sense that how data cleaning will change the data and affect the analysis results. We achieve this goal based on the following three ideas. 
-
-\vspace{.5em}
-
-{\noindent \bf Sampling-and-Cleaning:} \projx allows users to clean a small sample of data, which is typically much cheaper and faster than cleaning the entire data. With the cleaned sample, the system is able to inform users the changes of their original analysis results, with the help of new query processing methods for dirty data~\cite{wang1999sample}. For example, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
-
-\vspace{.5em}
-{\noindent \bf Crowdsourcing and Active Learning:} Our second idea to provide instant feedbacks is to reduce the running time of data cleaning operations. We find that many data cleaning operations (e.g., entity resolution~\cite{DBLP:journals/pvldb/YakoutENOI11}, data repairing~\cite{DBLP:journals/pvldb/MozafariSFJM14} require to use active learning to train a machine learning model from the crowd, and then apply the model to clean the data. The completion time of the process largely depends on how fast to get labels from the crowd. A naive implementation is to send a set of tasks to a crowdsourcing platform, and allow arbitrary crowd workers to label them. This method can be very slow since in a real-world crowdsourcing platform, it is very likely that there are some workers who do tasks much slower than others. When such workers are doing our labeling tasks, we have to wait a lot of time until they finish. In the active learning component of our system, we address this problem by maintaining a pool of crowd workers and keeping track of the characteristics (i.e., quality and speed) of each worker in the pool. We develop a task routing strategy that can avoid assigning tasks to slow workers and significantly reduce the time that is required to train a machine learning model from the crowd.
-
+\subsubsection{Reducing Operator Latency}
 
 
 \vspace{.5em}
-{\noindent \bf Asynchronous Data Cleaning:} To provide more fine-grained feedbacks during a data cleaning process, our system allows users to execute a data cleaning operation asynchronously. The benefit of this feature is that users can monitor how data cleaning will change the data progressively. For example, suppose a user specifies an entity resolution operation that uses active learning to train a classifier to detect duplicates in a dataset. Since active learning is an iterative learning process, in each iteration it can train a classifier. With the asynchrony feature of our system, users can monitor the varying performance of the classifier, which enables them to have a better understanding of the cleaning process.
 
+{\noindent \bf Sampling:} One way to reduce operator latency is to reduce the number of tuples each operator processes.
+In \sys, sampling is a logical operator which is an invaluable tool in developing and iterating on data cleaning plans.
+\sys allows for quick prototyping and optimizing workflows on samples of data and then transfering these optimizations to full datasets.
+Sampling allows for quick introspection of otherwise opaque components, such as testing the quality of a crowd with a small set of records.
+\sys also provides the statistical tools to extrapolate (with confidence intervals) the insights learned on a sample.
+The problem of estimating aggregate query results has been proposed in prior work ~\cite{wang1999sample} and is challenging since data cleaning may change
+the statistics of a sample making it not uniform.
+In this work, we build on these results to allow users to declare aggregate queries of interest and notify them when a change to a plan has a statistically significant effect.
+
+%Recently proposed, sample-based query processing methods for dirty data can help inform users the changes about the statistical significance of 
+%changes made to the data.
+%For example, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. 
+%But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. 
+%After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
+
+\vspace{.5em}
+{\noindent \bf Crowdsourcing and Active Learning:} Crowd-based operators are often the rate-determining steps in a data cleaning plan.
+A key problem is that completion time of the operator largely depends on how fast all of the tasks can be completed by some crowd worker.
+This method can be very slow since in a real-world crowdsourcing platform, it is very likely that there are some workers who do tasks much slower than others; analagous to the straggler problem in distributed systems.
+We address this problem by maintaining a pool of crowd workers and keeping track of the characteristics (i.e., quality and speed) of each worker in the pool. We develop a task routing strategy that can avoid assigning tasks to slow workers and significantly reduce the time that is required to train a machine learning model from the crowd.
 
 %Even cleaning a sample of data, data cleaning can still take a lot of time. This is especially true when it requires humans to clean the data. 
 
+\subsubsection{Plan-level Optimization}
+The next category of optimizations happen at a plan-level i.e., the sequence or execution pattern of the operators.
+We highlight two challenges: allowing users to see early results, and allowing users to change data cleaning plans mid-execution.
 
+\vspace{.5em}
+{\noindent \bf Asynchronous Data Cleaning:} To provide more fine-grained feedbacks during a data cleaning process, our system allows users to execute a data cleaning operation asynchronously. Tuples are processed by each of the operators in the plan and the intermediate results are persisted allowing users to query the results at any time. Thus, at any time, the user can get a ``best effort" query result.
 
+\vspace{.5em}
 
-
-
-\subsubsection{Hot Swapping}
-While we can provide a library of sensible default parameters and pipeline architectures, they are not guaranteed to work for every dataset and in every domain. 
-Data cleaning is an inherently iterative process where, through trial and error, users find pipelines and parameters that work for a specific dataset.
-The challenge is that these pipelines can be very long running operations, and it is inefficient to restart the pipeline every time the user wants to make a small change.
-We design a framework for \emph{hot swapping} pipeline components and re-using exisitng results through caching and lineage, which handle downstream and upstream changes respectively.
+The challenge is that these pipelines can be very long running operations, and even with sampling, it is inefficient to restart the plan every time the user wants to make a small change.
+We design a framework for \emph{hot swapping} plan operators and re-using exisitng results through caching and lineage, which handle downstream and upstream changes respectively.
+The challenge is to do this while preserving correctness of the operation by ensuring that the result is exactly the same as if the modified plan was run from the start.
 Of course, this requires users to conform to an API so that the input and output behaviors of the operators are the same.
 
+
 \vspace{.5em}
 
-{\noindent \bf In-Memory Caching: } Caching allows for result re-use if a downstream pipeline operator is modified or added.
+{\noindent \bf Hot Swapping (Caching): } Caching allows for result re-use if a downstream operator is modified or added.
 If the system has sufficient memory, then we can cache all of the intermediate results. 
-However this is not always possible, and the key challenge is to select which steps of the pipeline to cache.
+However this is not always possible, and the key challenge is to select which results to cache.
 To do this, we have to integrate the caching framework with our recommendation engine.
-When, we make a recommendation for a change, we must cache the preceding pipeline operator. 
+When, we make a recommendation for a change, we must cache the preceding operator. 
 
 \vspace{.5em}
 
-{\noindent \bf Lineage: } A more challenging problem is when an upstream operator is modified or added.
-In general, we cannot do much about this, but there are some important special cases where we can analyze the
+{\noindent \bf Hot Swapping (Lineage): } We can analyze the
 semantics of a modified operator to understand how results change, \i.e. decreasing a similarity join threshold increases the number of output pairs or adding an additional filtering step reduces the number of output tuples. 
 The key property here is monotonicity, and some types of monotone \textsf{Filter}, and \textsf{SimilarityJoin} are data cleaning analogs for a Select-Join relational algebra.
 In this setting, can model this problem as a view/lineage problem.
-Since they are monotone, we can perform a variante of incremental maintenance updating a final result given insertion or deletion of intermediate tuples.
+Since they are monotone, we can perform a variant of incremental maintenance updating a final result given insertion or deletion of intermediate tuples.
 
 \iffalse
 \subsection{Research Challenges}
