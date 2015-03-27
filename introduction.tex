@@ -1,3 +1,4 @@
+% !TEX root = demo.tex
 \section{Introduction}\label{sec:intro}
 
 % why feedback loops exist/are important (cite Joe’s shit in the past 3 years, blinkdb, etc.). highlight domain specificity. Large variety of data cleaning tasks
@@ -14,10 +15,10 @@ in order to manage and fix the errors.
 
 Removing data errors from even a single dataset is 
 time consuming due to the breadth of possible errors that are manifest in the data,
-the variety of ways to clean the data, and the dependent on the specific application.
-For example, sample-and-clean techniques can compensate for bias in aggregation query 
-results without needing to clean the entire dataset, extracting and de-duplicating
-restaurant listings for a consumer facing website requires cleaning the entire dataset.
+the variety of ways to clean the data, and the requirements of applications that use the data.
+For example, though sample-and-clean techniques can compensate for bias in aggregation query 
+results without needing to clean the entire dataset~\cite{wang1999sample}, extracting and de-duplicating
+restaurant listings for a consumer-facing website requires cleaning the entire dataset.
 In addition, the user must go through this cleaning process for each of her data sources, as well as
 for possible errors introduced as part of earlier data curation steps~\cite{}.
 These tasks are infeasible without a general, user-efficient, and scalable data cleaning system.
@@ -35,17 +36,17 @@ These tasks are infeasible without a general, user-efficient, and scalable data 
 The problem of data cleaning is not new -- data cleaning systems have been
 explored by both the research and industry communities since the beginning of data management.
 Extract-transform-load (ETL) systems~\cite{informatica,talend,nadeef,apachefalcon}
-required developers to manually wrote data cleaning rules which were executed as 
+required developers to manually write data cleaning rules which were executed as 
 long batch jobs.
 Projects such as Wrangler~\cite{wrangler,trifacta} and
-OpenRefine~\cite{openrefine} observed that data cleaning is highly iterative, and
+OpenRefine~\cite{openrefine} observed that data cleaning is highly iterative and
 introduced user-centric spreadsheet-style interfaces that enable the user to inspect a sample of the dataset, 
-compose data cleaning sequences using a direct manipulation interface, and apply these sequences over the full dataset.   
+compose data cleaning sequences using a direct manipulation interface, and apply these sequences to the full dataset.   
 More recently, a number of crowd-based~\cite{gokhale2014corleone,stonebraker2013data}
-systems have been proposed to reduce the burden of performing the manual cleaning tasks from the data cleaning analyst 
+systems have been proposed to relieve the data cleaning analyst of the burden of performing the manual cleaning tasks
 by utilizing crowd workers on systems such as Mechanical Turk or ODesk~\cite{argonaut}.
 
-Unfortunately, existing systems are limited in two key ways.
+Unfortunately, existing systems are limited in three key ways.
 First, the batch oriented systems result in a very slow feedback loop 
 that inhibits the user's ability to rapidly prototype different data cleaning solutions (e.g., tweak and 
 try different similarity metrics or sampling techniques based on current data cleaning results).
@@ -55,13 +56,12 @@ cleaning operations necessary for a dataset.  The user must then combine and int
 data cleaning systems in order to clean their data.
 Third, these systems do not employ task-specific optimizations
 such as tuning similarity threshold parameters or replacing fast-but-inaccurate operators with slower but more accurate ones.
-These existing limitations suggest the need for a system that is both general enough to
-adapt to a wide range of data cleaning applications, scalable to large datasets, 
-and that natively supports high-feedback interactions to enable rapid data cleaning iterations.
+These existing limitations suggest the need for a system that is general enough to
+adapt to a wide range of data cleaning applications, scales to large datasets, 
+and natively supports fast-feedback interactions to enable rapid data cleaning iteration.
 
 To this end, we are currently building \sys\footnote{{\scriptsize \sys uses {\bf C}rowds, {\bf C}ode, and machine {\bf L}earners to deep cleanse dirty data.}}, 
-a scalable data cleaning
-framework designed with rapid feedback in mind.  Our goal is to
+a scalable data cleaning framework designed with rapid feedback in mind.  Our goal is to
 engineer a highly interactive form of data cleaning where the user can easily prototype a data cleaning execution plan,
 quickly inspect the quality of the cleaned results at any point in the plan, and seamlessly
 tweak the operators and parameters on the fly.
@@ -71,43 +71,34 @@ as well as tackling several research challenges:
 
 \squishlist
 \item {\bf Operator and API design}: We have designed a core set of logical data cleaning operators --
-filter, similarity join, extract and sample -- that can be used to
-implement operations such as Blocking, and entity matching.  \sys also supports
-rule-based, machine learning-based, and crowd-sourcing based physical implementations of the operators.  
-This combination of logical and physical designs lets users to easily start the cleaning process
-with standard rule-based algorithms, transition to human-workers for machine-difficult 
-errors, and incrementally build models to automate the cleaning process.  
-In addition, we have developed a large library of common implementations of 
-each logical operator that can be easily tuned and used out of the box, as well as a crowd-managment 
-framework that supports multiple crowd-sourcing platforms such as Mechanical Turk.
+filter, similarity join, extract and sample -- that can be composed to
+implement high-level cleaning tasks such as entity resolution.  Operators support
+rule-based, learning-based, and crowd-based physical implementations. 
+To support crowd-based cleaning operators, we have developed a crowd-managment 
+framework that delivers data cleaning tasks to multiple crowdsourcing platforms using a common API.
 
-\item {\bf Near-instant feedback}: We are investigating multiple approaches to reduce the 
-feedback loop throughout the system.  First, nteracting with a crowd is commonly the primary latency bottleneck,
-and we are studying techniques such as straggler mitigation~\cite{venkataraman2014power}, worker latency modeling, and
-bandit algorithms~\cite{}\ewu{DAN FILL THIS} to consistently and cost effectively retrive crowd results in seconds rather than hours. 
-Second, minimizing the time for the {\it first} end-to-end cleaning result is arguably more important than 
-end-to-end latency for cleaning the entire dataset.    We are studying techniques to pick samples that are
-most likely to be cleaned by the plan (and consequently be interesting to the user.)
+\item {\bf Near-instant feedback}: We accelerate feedback loops in the system with techniques to reduce both 
+intra- and inter-operator latencies. To improve Crowd operator performance, we leverage techniques such as straggler 
+mitigation~\cite{venkataraman2014power}, worker latency modeling, and bandit algorithms~\cite{thompson1933likelihood}
+to consistently retrieve crowd results in seconds rather than hours. To reduce latencies at a plan level, we allow data cleaning to 
+proceed asynchronously and allow users to introspect and modify data cleaning plans at any point during their execution.
 
 \item {\bf Hot Swapping}: In contrast to batch-oriented data cleaning, rapid iteration necessitates the
 ability to tune an operator parameter or reconfigure the sequence of cleaning operators as the cleaning
-plan is running.   We are also studying the conditions for when the partial results for one
-cleaning plan can be safely used in a similar but reconfigured plan.  We are using this hot-swapping primitive
-to implement a cleaning plan optimizer that continually refines the cleaning plan based on user-defined latency-quality
-tradeoffs.
-
+plan is running.  We develop techniques that leverage tuple lineage to intelligently cache intermediate results to minimize
+re-computation when an in-flight plan has been modified.
 \squishend
 
 
-In this demonstration, we will run an entity resolution plan on two restaurant datasets, and
-show how \sys can be used to 1) specify and execute a data cleaning plan for the first dataset using our domain specific
-language, 2) quickly clean a sample of the first dataset to characterize how data is cleaned
-in the end-to-end plan, 3) apply the cleaning plan to the second dataset and show that the cleaned dataset
-is suboptimal, 4) incrementally refine the plan by changing an operator's parameter (e.g., similarity threshold)
+In our demonstration, we will run an entity resolution plan on two restaurant datasets, and
+show how \sys can be used to 1) specify and execute a data cleaning plan using our domain specific
+language, 2) quickly clean a sample to characterize how a plan is performing, 
+3) observe that cleaning plans are not necessarily optimal across datasets, and 
+4) incrementally refine the plan to fit a new dataset by changing an operator's parameter (e.g., similarity threshold)
 or its physical implementation.
-The fourth interaction lets the participants act as a human optimizer and inspect the effects of different physical plans.
-Users can then execute the plan over a live crowd that uses the audience as workers, or a simulated crowd
-that uses pre-collected crowd responses.    The dashboard (Figure~\ref{screenshot-rec} also provides a live inspection
+The fourth interaction lets the participants inspect the effects of different physical plans.
+Users can then execute a plan over a live crowd that uses the audience as workers, or a simulated crowd
+that uses pre-collected crowd responses. The dashboard (Figure~\ref{screenshot-rec}) also provides a live inspection
 interface to view the status of the cleaning plan as it executes.
 
 
