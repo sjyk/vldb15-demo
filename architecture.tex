@@ -6,21 +6,23 @@ Figure~\ref{fig:arch} depicts the system architecture.
 
 \begin{figure}[t]
 \centering
+\vspace{-0.5cm}
 \includegraphics[width = .5\textwidth]{figs/architecture.png}
-\caption{\sys system architecture, with an example entity resolution pipeline.}
+\vspace{-1cm}
+\caption{\sys system architecture, with an example entity resolution plan.}
 \label{fig:arch}
 \end{figure}
 
 \subsection{Architecture Overview}
-The \sys architecture is focused on providing UI, language, and systems tools for building pipelines for data cleaning. 
-Users interact with the system through the pipeline UI, which allows them to compose data cleaning workflows from modular operators.
-These pipelines are synthesized as expressions in our data cleaning language (section~\ref{sec:dsl}), then compiled into physical cleaning plans.
-As data cleaning executes, users can interact with the pipelines via tight feedback loops in two forms.
-First, users can issue queries and observe approximate results based on the data that has been cleaned thus far.
-Second, users can pick from a set of recommended modifications to their pipeline (for example, making a similarity join more permissive) and modify the data cleaning in-flight by \textit{hot-swapping} components of the pipeline.
-Data is stored in a relational engine that tracks pipeline lineage with each tuple in order to enforce the semantics of hot-swapping correctly on in-flight tuples.
+The \sys architecture is focused on providing UI, language, and systems tools for building data cleaning plans.
+Users interact with the system through the \textbf{Planning UI}, which allows them to compose data cleaning workflows from modular operators.
+These workflows are represented as expressions in our data cleaning language (section~\ref{sec:dsl}), then synthesized as data cleaning plans by our \textbf{DSL compiler}.
+As the \textbf{Data Cleaning Plan Executor} executes the compiled plans, users can interact with the plans via tight feedback loops in two ways.
+First, users can issue queries to the \textbf{SAQP module} and observe approximate results based on the data that has been cleaned thus far.
+Second, the \textbf{Recommendation Engine} displays a set of suggested modifications to the active cleaning plan (for example, making a similarity join more permissive) in the \textbf{Planning UI}, and users can update the data cleaning plan in-flight by accepting a suggestion and using the \textbf{Hot Swapper} to modify components of the pipeline.
+Intermediate results and cleaned data are maintained in a \textbf{Lineage and Storage engine} that tracks each tuple's lineage in order to enforce the semantics of hot-swapping correctly on in-flight tuples.
 Logical cleaning operators may have a number of physical implementations (section~\ref{sec:operators}).
-Automated rule-based or learning-based operators leverage Spark and MLLib for efficient distributed computation, and operators that require human intervention call out to \sys's crowd manager API, which renders data cleaning tasks and displays them to crowd workers across multiple crowds (e.g., Amazon Mechanical Turk) for processing.
+Automated rule-based or learning-based operators leverage Spark and MLLib for efficient distributed computation, and operators that require human intervention call out to \sys's \textbf{Crowd Manager} API, which renders data cleaning tasks and displays them to crowd workers from multiple crowds (e.g., Amazon Mechanical Turk) in a web-based \textbf{Cleaning UI} for processing.
 
 \subsection{Cleaning DSL}
 \label{sec:dsl}
@@ -33,12 +35,14 @@ The general syntax of this language is:
 	with <physical operators> , <params>
 \end{lstlisting}
 
-These expressions are composable:
-\begin{lstlisting}
-R1 := <logical operator> on <relations> 
-	with <physical operators> , <params>
-R2 := <logical operator> on R1 
-	with <physical operators> , <params>
+These expressions are composable. For example, the following represents the data cleaning plan in Figure~\ref{fig:arch} (an entity resolution plan):
+\begin{lstlisting} 
+Filtering on (
+    SimilartyJoin on (
+        Sampling on BaseTable
+        with Uniform)
+    with Jacard, thresh=0.8) 
+with CrowdDeduplication, numVotes=3
 \end{lstlisting}
 \projx provides an integration layer of these expressions with Scala/Apache Spark allowing for the manipulation of SchemaRDDs (Spark RDDs with additional schema information):
 \begin{lstlisting}
@@ -48,9 +52,13 @@ val cleanData = clean(rddA,<expression>)
 
 \subsection{Cleaning Operators}
 \label{sec:operators}
-\sys supports a small set of operators that can express a wide variety of common data cleaning workflows. For example, the pipeline depicted in in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). Additional operators include Extraction, Sampling, and Active Learning.
+\sys supports a small set of operators that can express a wide variety of common data cleaning workflows. 
+For example, the pipeline depicted in in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). 
+Additional operators include Extraction and Sampling.
 
-Individual logical operators have multiple physical implementations, each with its own cost, latency, and accuracy profile. For example, crowd-based implementations tend to be high cost, high latency, and high accuracy, whereas rule-based implementations tend to be low cost, low latency, and low accuracy. The \texttt{with} clause of our data cleaning language allows users to explicitly specify desired physical operators, and \sys's recommendation engine provides actionable suggestions for modifying the pipeline to navigate the tradeoff space.
+Individual logical operators have multiple physical implementations, each with its own cost, latency, and accuracy profile. 
+For example, crowd-based implementations tend to be high cost, high latency, and high accuracy, whereas rule-based implementations tend to be low cost, low latency, and low accuracy. 
+The \texttt{with} clause of our data cleaning language allows users to explicitly specify desired physical operators, and \sys's recommendation engine provides actionable suggestions for modifying the pipeline to navigate the tradeoff space.
 
 
 
