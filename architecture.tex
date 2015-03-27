@@ -33,12 +33,14 @@ The general syntax of this language is:
 	with <physical operators> , <params>
 \end{lstlisting}
 
-These expressions are composable:
-\begin{lstlisting}
-R1 := <logical operator> on <relations> 
-	with <physical operators> , <params>
-R2 := <logical operator> on R1 
-	with <physical operators> , <params>
+These expressions are composable. For example, the following represents the data cleaning plan in Figure~\ref{fig:arch} (an entity resolution plan):
+\begin{lstlisting} 
+Filtering on (
+    SimilartyJoin on (
+        Sampling on BaseTable
+        with Uniform)
+    with Jacard, thresh=0.8) 
+with CrowdDeduplication, numVotes=3
 \end{lstlisting}
 \projx provides an integration layer of these expressions with Scala/Apache Spark allowing for the manipulation of SchemaRDDs (Spark RDDs with additional schema information):
 \begin{lstlisting}
@@ -48,9 +50,13 @@ val cleanData = clean(rddA,<expression>)
 
 \subsection{Cleaning Operators}
 \label{sec:operators}
-\sys supports a small set of operators that can express a wide variety of common data cleaning workflows. For example, the pipeline depicted in in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). Additional operators include Extraction, Sampling, and Active Learning.
+\sys supports a small set of operators that can express a wide variety of common data cleaning workflows. 
+For example, the pipeline depicted in in Figure~\ref{fig:arch} performs crowd-based entity resolution: the similarity join operator generates candidate tuple pairs (the \textit{blocking} step), and the crowd-based filter operator uses humans to identify duplicates from the candidates (the \textit{matching} step). 
+Additional operators include Extraction and Sampling.
 
-Individual logical operators have multiple physical implementations, each with its own cost, latency, and accuracy profile. For example, crowd-based implementations tend to be high cost, high latency, and high accuracy, whereas rule-based implementations tend to be low cost, low latency, and low accuracy. The \texttt{with} clause of our data cleaning language allows users to explicitly specify desired physical operators, and \sys's recommendation engine provides actionable suggestions for modifying the pipeline to navigate the tradeoff space.
+Individual logical operators have multiple physical implementations, each with its own cost, latency, and accuracy profile. 
+For example, crowd-based implementations tend to be high cost, high latency, and high accuracy, whereas rule-based implementations tend to be low cost, low latency, and low accuracy. 
+The \texttt{with} clause of our data cleaning language allows users to explicitly specify desired physical operators, and \sys's recommendation engine provides actionable suggestions for modifying the pipeline to navigate the tradeoff space.
 
 
 
