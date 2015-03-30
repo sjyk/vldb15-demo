@@ -3,51 +3,51 @@
 In this section, we describe some of the research and engineering challenges in developing \sys.
 
 \subsection{Research Challenges}
-Data cleaning is an inherently iterative process where, through trial and error, users optimize a data cleaning workflow and parameters for a specific dataset.
-Iterating over these workflows can be very time consuming and complex to debug (e.g., if one operator uses the crowd).
-In our research, we explore two categories of optimizations for accelerating iteration on data cleaning plans: (1) intra-operator optimizations and approximations that reduce the latency of individual operators, and (2) plan-level optimizations that allow for asynchrony and mid-execution modification.
+There are three principal research challenges in \sys: (1) recommendations based on user feedback, (2) mid-execution modification of plans, and (3) 
+optimization of crowd physical operators.
 
-\vspace{-0.2cm}
-\subsubsection{Reducing Operator Latency}
-\vspace{.2em}
+\subsubsection{Recommendation}
+Our first research challenge is to recommend changes to a data cleaning plan based on user feedback. 
+At any edge of our operator D.A.G, the user can inspect the output and identify erroneous tuples.
+However, determining the correctness of a data cleaning operator requires a before-and-after view of the data.
+We use lineage to show the user a result tuple and all the contributing input tuples.
 
-{\noindent \bf Sampling:} One way to reduce operator latency is to reduce the number of tuples each operator processes.
-In \sys, sampling is a first-class logical operator that can be used for quickly prototyping and optimizing workflows on samples of data and then transfering these optimizations to full datasets.
-Sampling allows for quick introspection of otherwise opaque components, such as testing the quality of a crowd with a small set of records.
-\sys also provides the statistical tools to extrapolate (with confidence intervals) the insights learned on a sample.
-The problem of estimating aggregate query results over dirty data has been investigated in prior work~\cite{wang1999sample}, 
-addressing the challenge that data cleaning may change the underlying statistics of a sample.
-In this work, we build on these results to allow users to declare aggregate queries of interest and notify them when a change to 
-a plan has a statistically significant effect.
+The user marks result tuples that are incorrect using the input and the results. 
+This feedback is operator specific, for example, in a Similarity Join the user marks false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user marks incorrect attribute values.
+We then generate a set of recommended changes to the existing plan based on this information.
+Our recommendations do not change the logical plan, and only modify and add physical operators to the logical plan.
 
-%Recently proposed, sample-based query processing methods for dirty data can help inform users the changes about the statistical significance of 
-%changes made to the data.
-%For example, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. 
-%But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. 
-%After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
+{\noindent \bf Parameter Changes:} Changing parameters are the first type of recommendations in \sys.
+Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specifc, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
+For example, Similarity Joins have a similarity threshold parameter. 
+Increasing this threshold reduces the selectivity of the join, \sys chooses a threshold that maximizes the F1-score. 
 
 \vspace{.5em}
-{\noindent \bf Crowdsourcing and Active Learning:} 
-Crowd-based operators are often the rate-limiting steps in a data cleaning plan.
-Completion time of an operator depends on the response times of individual workers, and on real-world crowdsourcing 
-platforms, the distribution of response latencies is highly skewed; analogous to the straggler problem in distributed systems.
-We address this problem by maintaining a pool of high-speed, high-quality crowd workers and develop task routing strategies 
-that can avoid assigning tasks to slow workers and leverage redundancy to significantly reduce the time that is required to clean 
-data with the crowd. Additionally, active learning techniques reduce the number of tuples that require crowd work to clean the
-data.
-%Even cleaning a sample of data, data cleaning can still take a lot of time. This is especially true when it requires humans to clean the data. 
 
-\vspace{-0.25cm}
-\subsubsection{Plan-level Optimization}
-The next category of optimizations happen at the plan-level, i.e., the sequence or execution pattern of the operators.
-We highlight two challenges: allowing users to see early results, and allowing users to modify plans mid-execution.
+{\noindent \bf Physical Operator Replacement/Addition:} The next type of recommendations are replacements of physical operators.
+There are many physical implementations of the same physical operators, i.e. crowd vs. automated filtering or differing similarity metrics for Similarity Join. 
+\sys recommends changes to these physical operators when the user indicates that they are not satisfied with the output.
+For example, we can use the user feedback as training examples in our learners as an estimate of the crowd performance.
+This allows us to estimate the value of replacing the physical operator with a active learning variant.
+Additionally, we can try different variants of automated operators to test how accurate they are with respect to the user feedback.
 
-\vspace{.3em}
-{\noindent \bf Asynchronous Data Cleaning:} To provide fine-grained feedback during a data cleaning process, our system executes data cleaning operations asynchronously. Tuples are processed in a streaming fashion by each of the operators in the plan and the intermediate results are persisted, allowing users to query the results at any time. Thus, at any time, the user can get a ``best effort" query result.
+There are also cases where we may want to add another physical operator, while still preserving the logical input-output behavior of the workflow.
+It is common in extraction tasks to have most records accurately extracted with an automated extractor but only a small subset requiring additional inspection. 
+For these cases, we can add a crowd-based Filter operator to seperate these examples for additional cleaning.
 
-\vspace{.3em}
-{\noindent \bf Hot  Swapping:} To be able to iterate quickly on cleaning plans, users must not only be able to observe data while 
-cleaning is in progress, but also modify the plans that produce it. Because cleaning can be time-consuming, it is inefficient to 
+\vspace{.5em}
+
+{\noindent \bf Cost Estimates:} Of course, changing plans when using crowdsourcing may significantly change its cost.
+For every recommendation, we estimate the number of additional tuples processed by the crowd operators and provide 
+the user with an estimated cost.
+
+\subsubsection{Dynamic Modification}
+%The next category of optimizations happen at the plan-level, i.e., the sequence or execution pattern of the operators.
+%We highlight two challenges: allowing users to see early results, and allowing users to modify plans mid-execution.
+%\vspace{.3em}
+%{\noindent \bf Asynchronous Data Cleaning:} To provide fine-grained feedback during a data cleaning process, our system executes data cleaning operations asynchronously. Tuples are processed in a streaming fashion by each of the operators in the plan and the intermediate results are persisted, allowing users to query the results at any time. Thus, at any time, the user can get a ``best effort" query result.
+%\vspace{.3em}
+To be able to quickly modify cleaning plans after recommendations, we explore ways to intelligently re-use computation. Because cleaning can be time-consuming, it is inefficient to 
 restart the plan every time the user wants to make a small change.
 We design a framework for \emph{hot swapping} plan operators that re-uses existing results while ensuring that the output of the swapped plan is the same as if the new plan had been run from the start.
 
@@ -62,6 +62,39 @@ For example, decreasing a similarity join threshold increases the number of outp
 reduces the number of output tuples. The key property here is monotonicity, and some types of monotone \textsf{Filter} and \textsf{SimilarityJoin} are data cleaning analogs for a Select-Join relational algebra.
 We can therefore model this problem as a view/lineage and perform a variant of incremental maintenance to update the 
 final result given insertion or deletion of intermediate tuples.
+
+\vspace{-0.2cm}
+\subsubsection{Crowd Operator Latency}
+\vspace{.2em}
+
+%{\noindent \bf Sampling:} One way to reduce operator latency is to reduce the number of tuples each operator processes.
+%In \sys, sampling is a first-class logical operator that can be used for quickly prototyping and optimizing workflows on samples of data and then transfering these optimizations to full datasets.
+%Sampling allows for quick introspection of otherwise opaque components, such as testing the quality of a crowd with a small set of records.
+%\sys also provides the statistical tools to extrapolate (with confidence intervals) the insights learned on a sample.
+%The problem of estimating aggregate query results over dirty data has been investigated in prior work~\cite{wang1999sample}, 
+%addressing the challenge that data cleaning may change the underlying statistics of a sample.
+%In this work, we build on these results to allow users to declare aggregate queries of interest and notify them when a change to 
+%a plan has a statistically significant effect.
+
+%Recently proposed, sample-based query processing methods for dirty data can help inform users the changes about the statistical significance of 
+%changes made to the data.
+%For example, suppose one collects a restaurant dataset, and runs some aggregation queries on the dataset, e.g., computing the number of the restaurants in San Fransisco and getting a query result of 12000. 
+%But, when looking at the dataset, she finds that there are many duplicate restaurants in the dataset, and some restaurants' locations are misspelled (e.g., S\underline{e}n Fransisco). She can use our system to create a sample of the data, and then apply a data cleaning procedure to the sample. 
+%After the sample is cleaned, our system can estimate the impact of data cleaning on her original query results, and return her corrected answers with confidence intervals, e.g., $5000\pm300$. Intuitively, this result means that if the same data-cleaning procedure is applied to the full dataset, the number of the restaurants in San Fransisco will be within $[4700, 5300]$. 
+
+%\vspace{.5em}
+%{\noindent \bf Crowdsourcing and Active Learning:} 
+Crowd-based operators are often the rate-limiting steps in a data cleaning plan.
+Completion time of an operator depends on the response times of individual workers, and on real-world crowdsourcing 
+platforms, the distribution of response latencies is highly skewed; analogous to the straggler problem in distributed systems.
+We address this problem by maintaining a pool of high-speed, high-quality crowd workers and develop task routing strategies 
+that can avoid assigning tasks to slow workers and leverage redundancy to significantly reduce the time that is required to clean 
+data with the crowd. Additionally, active learning techniques reduce the number of tuples that require crowd work to clean the
+data.
+%Even cleaning a sample of data, data cleaning can still take a lot of time. This is especially true when it requires humans to clean the data. 
+
+\vspace{-0.25cm}
+
 
 \iffalse
 \subsection{Research Challenges}
