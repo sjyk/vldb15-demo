@@ -20,17 +20,17 @@ Analysts report spending upwards of 80\% of their time on problems in data clean
 error diagnosis, instance-specific cleaning scripts, and managing large data ingest pipelines.
 The underlying problem is that data cleaning is often specific to the domain, dataset, and eventual analysis,
 leading to a breadth of possible errors that are manifest in the data and a variety of options to clean it.
-The user must go through the cleaning process with little or no guidance, deciding for each of her data sources what to clean, how to clean it,
+The user must go through the cleaning process with little or no guidance, deciding for each of her data sources what to extract, how to clean it,
 and whether that cleaning will significantly change results. 
 Without a general, user-efficient, and scalable data cleaning system, analysts have to repeatedly manually construct data cleaning workflows while simultaneously managing a very complex tradeoff space.
 
 Figure~\ref{fig:ex-plan} shows a data cleaning workflow that prepares a dataset of unstructured restaurant webpages for analysis.
-In order to run queries over the restaurants, the data analyst must extract structured fields of interest (e.g. address, cuisine type), then eliminate other sources of error, such as duplicate restaurant entries or non-canonical cuisine types (e.g., `Chinese' vs. `Chinese food'). 
-Though these data cleaning requirements have been specified at a logical level, there are many different possible \textit{physical} implementations of the logical operators. 
+In order to run queries over the restaurants, the data analyst must extract structured fields of interest (e.g. address, cuisine category), then eliminate other sources of error, such as duplicate restaurant entries or non-canonical cuisine categories (e.g., `Chinese' vs. `Chinese food'). 
+Though these data cleaning requirements have been specified at a logical level, there is a huge space of possible \textit{physical} implementations of the logical operators. 
 For example, extraction could be rule-based, rely on structured learning, ask crowd workers to extract the desired data fields, or some combination of all three.
-Even after selecting (say) a crowd-based operator, many parameters might influence the quality of the output data: the number of crowd workers who examine a given webpage, the amount each worker is paid, etc.
+Even after selecting (say) a crowd-based operator, many parameters might influence the quality of the output data or the speed and cost of cleaning it: the number of crowd workers who vote on the extraction for a given webpage, the amount each worker is paid, etc.
 A priori, a data analyst has little intuition for what physical plan will be optimal in this large space. 
-In practice, she will likely pick a simple default (say, a rule-based extraction), then run data through the workflow and iterate by changing parameters or choosing new physical operators until she is satisfied with the cleaned data.
+In practice, she will likely pick a simple default for each logical operator (say, a rule-based extraction), then run data through the workflow and iterate by changing parameters or choosing new physical operators until she is satisfied with the cleaned data.
 
 %The prevalance of data cleaning systems in both the research and industrial communities --
 %Corleone does blah, XXX addresses blah. Nadeef does blah -- speak to the importance of a
@@ -40,17 +40,17 @@ In practice, she will likely pick a simple default (say, a rule-based extraction
 % why existing systems suck aka related work
 % 1. have slow feedback loops (dataset-dependence, …)
 % 2. solve very specific data-cleaning tasks
-The problem of data cleaning is not new -- data cleaning systems have been explored by both the research and industry communities since the beginning of data management.
-However, no existing systems address the workflow described above from end to end.
-Extract-transform-load (ETL) systems~\cite{informatica,talend,apachefalcon} which require developers to manually write data cleaning rules and execute them as long batch jobs, 
-and constraint-driven tools that allow analysts to define ``data quality rules" and automatically propose corrections to maximally satisfy these rules \cite{DBLP:conf/sigmod/DallachiesaEEEIOT13}
-provide no opportunity for iteration or user feedback, inhibiting the user's ability to rapidly prototype different data cleaning solutions.
+Since the beginning of data management, systems have been explored by both the research and industrial communities to improve data cleaning efficiency and quality.
+However, no existing systems address the end-to-end data cleaning process described above.
+Extract-transform-load (ETL) systems~\cite{informatica,talend,apachefalcon} require developers to manually write data cleaning rules and execute them as long batch jobs, 
+and constraint-driven tools that allow analysts to define ``data quality rules" and automatically propose corrections to maximally satisfy these rules \cite{DBLP:conf/sigmod/DallachiesaEEEIOT13}.
+Unfortunately, neither provide the opportunity for iteration or user feedback, inhibiting the user's ability to rapidly prototype different data cleaning solutions.
 Projects such as Wrangler~\cite{wrangler,trifacta} and OpenRefine~\cite{openrefine} support iteration with user-centric spreadsheet-style interfaces that enable the user to inspect a sample of the dataset, compose data cleaning sequences using a direct manipulation interface, and apply these sequences to the full dataset.
 However, they are limited to specific extraction-based cleaning tasks, do not support crowd or machine learning-based refinement at scale, and cannot incorporate user feedback to optimize the data cleaning sequences.
 Crowd-based~\cite{gokhale2014corleone,stonebraker2013data} systems have been proposed to relieve the data cleaning analyst of the burden of rule specification or manual cleaning, but are usually very task specific (e.g., de-duplication~\cite{gokhale2014corleone,park2014crowdfill,eracer,chen2014integrating}) and require analysts to awkwardly chain systems together to execute the entire cleaning workflow, preventing end-to-end optimization of the entire plan.
 These existing limitations suggest the need for a system that is general enough to adapt to a wide range of data cleaning applications, scales to large datasets, and natively supports fast-feedback interactions to enable rapid data cleaning iteration.
 
-In this paper, we introduce \sys, a system designed to support such a workflow from end to end.
+In this paper, we introduce \sys, a system designed to support such a workflow end to end.
 \sys allows users to specify declarative data cleaning plans composed of rule-based, learning-based, or crowd-based operators, then makes cost-aware recommendations for improving the accuracy or latency of a plan by swapping in new physical operators or modifying their parameters.
 \sys supports rapid iteration on plans by providing users with the opportunity to provide ground-truth feedback after each logical operator in the plan, improving recommendations, and provides efficient support for making adjustments to in-flight plans using caching and tuple lineage.
 
