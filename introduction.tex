@@ -4,9 +4,11 @@
 \begin{figure}[t]
 \centering
 \vspace{-0.5cm}
-\includegraphics[width = .5\textwidth]{figs/locu_example.png}
-\vspace{-0.7cm}
-\caption{An example data cleaning plan for unstructured restaurant data.}
+\includegraphics[width = .4\textwidth]{figs/lifecycle.png}
+\vspace{-0.2cm}
+\caption{Example iterations of the extraction portion of a cleaning pipeline that extracts restaurant information from webpages.  1) User uses a sample to decide if there are enough unique restaurants in the webpages to be worth cleaning.
+2) User then runs the rule-based extractor on the whole dataset and inspects the live results.  2) The quality was low, so user moves to a manual human-based solution.  3) The quality is high, but the crowd-based extractor is 
+slow. There are enough high quality extractions to train a classifier that decides if the output of the automated process should be sent to the crowd.}
 \label{fig:ex-plan}
 \end{figure}
 % why feedback loops exist/are important (cite Joe’s shit in the past 3 years, blinkdb, etc.). highlight domain specificity. Large variety of data cleaning tasks
