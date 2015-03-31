@@ -8,24 +8,29 @@ optimization of crowd physical operators.
 
 \subsubsection{Recommendation}
 Our first research challenge is to recommend changes to a data cleaning plan based on user feedback. 
-At any edge of our operator D.A.G, the user can inspect the output and identify erroneous tuples.
-However, determining the correctness of a data cleaning operator requires a before-and-after view of the data.
-We use lineage to show the user a result tuple and all the contributing input tuples.
+%At any edge of our operator D.A.G, 
+The user can inspect the output of an operator and identify result tuples that are incorrect. This feedback is operator specific. For example, in a Similarity Join the user can mark false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user can mark incorrect attribute values. Based on the feedback, our system can make both intra-operator (changes of parameters within a operator) and inter-operator (changes of operators within a plan) recommendations. 
+%We then generate a set of recommended changes to the existing plan based on this information.
 
-The user marks result tuples that are incorrect using the input and the results. 
-This feedback is operator specific, for example, in a Similarity Join the user marks false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user marks incorrect attribute values.
-We then generate a set of recommended changes to the existing plan based on this information.
-Our recommendations do not change the logical plan, and only modify and add physical operators to the logical plan.
+%However, determining the correctness of a data cleaning operator requires a before-and-after view of the data.
+%We use lineage to show the user a result tuple and all the contributing input tuples.
 
-{\noindent \bf Parameter Changes:} Changing parameters are the first type of recommendations in \sys.
+%The user marks result tuples that are incorrect using the input and the results. 
+%This feedback is operator specific, for example, in a Similarity Join the user marks false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user marks incorrect attribute values.
+%We then generate a set of recommended changes to the existing plan based on this information.
+%Our recommendations do not change the logical plan, and only modify and add physical operators to the logical plan.
+
+\vspace{.25em}
+
+{\noindent \bf Intra-Operator Recommendation:} Changing parameters are the first type of recommendations in \sys.
 Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specifc, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
-For example, Similarity Joins have a similarity threshold parameter. 
+For example, Similarity Joins have a similarity threshold and a similarity function. 
 Increasing this threshold reduces the selectivity of the join, \sys chooses a threshold that maximizes the F1-score. 
 
-\vspace{.5em}
+\vspace{.25em}
 
-{\noindent \bf Physical Operator Replacement/Addition:} The next type of recommendations are replacements of physical operators.
-There are many physical implementations of the same physical operators, i.e. crowd vs. automated filtering or differing similarity metrics for Similarity Join. 
+{\noindent \bf Inter-Operator Recommendation:} The next type of recommendations are replacements of physical operators.
+There are many physical implementations of the same operator, i.e. crowd vs. automated filtering or differing similarity metrics for Similarity Join. 
 \sys recommends changes to these physical operators when the user indicates that they are not satisfied with the output.
 For example, we can use the user feedback as training examples in our learners as an estimate of the crowd performance.
 This allows us to estimate the value of replacing the physical operator with a active learning variant.
@@ -35,11 +40,14 @@ There are also cases where we may want to add another physical operator, while s
 It is common in extraction tasks to have most records accurately extracted with an automated extractor but only a small subset requiring additional inspection. 
 For these cases, we can add a crowd-based Filter operator to seperate these examples for additional cleaning.
 
+\iffalse
 \vspace{.5em}
 
 {\noindent \bf Cost Estimates:} Of course, changing plans when using crowdsourcing may significantly change its cost.
 For every recommendation, we estimate the number of additional tuples processed by the crowd operators and provide 
 the user with an estimated cost.
+
+\fi
 
 \subsubsection{Dynamic Modification}
 %The next category of optimizations happen at the plan-level, i.e., the sequence or execution pattern of the operators.
