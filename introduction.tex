@@ -25,21 +25,21 @@ Analysts report spending upwards of 80\% of their time on problems in data clean
 error diagnosis, instance-specific cleaning scripts, and managing large data ingest pipelines.
 The underlying problem is that data cleaning is often specific to the domain, dataset, and eventual analysis.
 The analyst is faced with a breadth of possible errors that are manifest in the data and a variety of options to clean it.
-She must go through the cleaning process with little or no guidance, deciding for each of her data sources what to extract, how to clean it, and whether that cleaning will significantly change results.
+She must go through the cleaning process via trial and error, deciding for each of her data sources what to extract, how to clean it, and whether that cleaning will significantly change results.
 
-Data analysis is inherently iterative and Figure~\ref{fig:ex-plan} shows a common progression for the development of a data cleaning plan, in this case the extraction of a restaurant's address from its unstructured webpage.
-While this operation can easily be represented at a \textit{logical} level by its inputs and outputs, there is a huge space of possible \textit{physical} implementations of the logical operator. 
+Data cleaning is inherently iterative and Figure~\ref{fig:ex-plan} shows a common progression for the development of a data cleaning plan, in this case the extraction of a restaurant's address from its unstructured webpage.
+While this operation can easily be represented at a \textit{logical} level by its input and output schema, there is a huge space of possible \textit{physical} implementations of the logical operator. 
 For example, extraction could be rule-based, rely on structured learning, ask crowd workers to extract the desired data fields, or some combination of all three.
 Even after selecting (say) a crowd-based operator, many parameters might influence the quality of the output data or the speed and cost of cleaning it: the number of crowd workers who vote on the extraction for a given webpage, the amount each worker is paid, etc.
 A priori, a data analyst has little intuition for what physical plan will be optimal in this large space.
 
-In practice, she will likely start by sampling the data, applying a simple method such as a rule-based approach, and querying the output to get a sense of the method's effectiveness (Figure~\ref{fig:ex-plan}.1).
+For the motivating example in Figure~\ref{fig:ex-plan}, the analyst will likely start by sampling the data, applying a simple method such as a rule-based approach, and querying the output to get a sense of the method's effectiveness (Figure~\ref{fig:ex-plan}.1).
 If the approach seems promising, she will apply the method to the entire dataset (Figure~\ref{fig:ex-plan}.2).
-However, the first approach tried seldom yields the desired accuracy on the first try, so the data analyst might have to experiment with other physical operators, for example a crowd operator that uses human workers to manually perform the extraction (Figure~\ref{fig:ex-plan}.3).
-Though such adjustments might improve accuracy, using the crowd to process every webpage is prohibitively slow.
-To achieved the desired accuracy without sacrificing speed, the data analyst now must experiment with hybrid physical implementations (Figure~\ref{fig:ex-plan}.4).
-Although this iterative design process eventually produces a satisfactory physical implementation of the extraction logical operator, to prepare the restaurant dataset for analysis, our analyst must implement and chain together several logical operators, e.g. eliminating duplicate restaurants from the dataset or canonicalizing categorical variables such as cuisine type.
-Without a general, scalable, and interactive system that supports rapid iteration on candidate cleaning plans, analysts have to manually construct a physical plan for each logical operator, requiring significant manual coding and parameter optimization.
+However, the initially attempted approach seldom yields the desired accuracy, so the data analyst might have to experiment with other physical operators, for example a crowd operator that uses human workers to manually perform the extraction (Figure~\ref{fig:ex-plan}.3).
+Making the decision to switch to a crowd operator is complex as while the crowd might improve accuracy, it is more costly and time-consuming.
+Ideally, to achieve the desired accuracy without sacrificing speed, the data analyst use a hybrid between crowds and automated techniques (Figure~\ref{fig:ex-plan}.4).
+In the evolution of this data cleaning plan, our data analyst needs to make many decisions about the choice of physical operators by reasoning about their latency, accuracy, and cost.
+Without a general, scalable, and interactive system that supports rapid iteration on candidate cleaning plans, analysts have to manually construct a physical plan and making the wrong decision, for example using the crowd when it only marginally improves accuracy, can be very costly.
 
 %The prevalance of data cleaning systems in both the research and industrial communities --
 %Corleone does blah, XXX addresses blah. Nadeef does blah -- speak to the importance of a
@@ -49,7 +49,7 @@ Without a general, scalable, and interactive system that supports rapid iteratio
 % why existing systems suck aka related work
 % 1. have slow feedback loops (dataset-dependence, …)
 % 2. solve very specific data-cleaning tasks
-Since the beginning of data management, systems have been explored by both the research and industrial communities to improve data cleaning efficiency and quality.
+%Since the beginning of data management, systems have been explored by both the research and industrial communities to improve data cleaning efficiency and quality.
 However, no existing systems address the end-to-end iterative data cleaning process described above.
 Extract-transform-load (ETL) systems~\cite{informatica,talend,apachefalcon} require developers to manually write data cleaning rules and execute them as long batch jobs, 
 and constraint-driven tools allow analysts to define ``data quality rules" and automatically propose corrections to maximally satisfy these rules \cite{DBLP:conf/sigmod/DallachiesaEEEIOT13}.
