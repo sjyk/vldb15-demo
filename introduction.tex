@@ -6,15 +6,18 @@
 \vspace{-0.5cm}
 \includegraphics[width = .4\textwidth]{figs/lifecycle.png}
 \vspace{-0.2cm}
-\caption{Example iterations of the extraction portion of a cleaning pipeline that extracts restaurant information from webpages.  1) User uses a sample to decide if there are enough unique restaurants in the webpages to be worth cleaning.
-2) User then runs the rule-based extractor on the whole dataset and inspects the live results.  2) The quality was low, so user moves to a manual human-based solution.  3) The quality is high, but the crowd-based extractor is 
-slow. There are enough high quality extractions to train a classifier that decides if the output of the automated process should be sent to the crowd.}
+\caption{Example iterations on the design of the portion of a cleaning plan that extracts restaurant addresses from their unstructured webpages.  
+1) An exploratory plan that uses a sample to evaluate a simple address extraction method.
+2) A plan that applies the method to the entire dataset. The quality is unsatisfactory. 
+3) An alternate plan that uses manual crowd extraction. The quality is now high, but the crowd-based extractor is slow. 
+4) A hybrid plan that sends only difficult webpages to the crowd, maximizing accuracy without sacrificing latency.}
 \label{fig:ex-plan}
+\vspace{-0.6cm}
 \end{figure}
 % why feedback loops exist/are important (cite Joe’s shit in the past 3 years, blinkdb, etc.). highlight domain specificity. Large variety of data cleaning tasks
 
 %
-% Genereal comment that data cleaning is important:
+% General comment that data cleaning is important:
 %
 The prevalence of dirty data presents a fundamental obstacle to modern data-driven applications, since 
 blindly using results that are derived from dirty data can lead to hidden, yet significant errors.
@@ -22,17 +25,21 @@ Analysts report spending upwards of 80\% of their time on problems in data clean
 error diagnosis, instance-specific cleaning scripts, and managing large data ingest pipelines.
 The underlying problem is that data cleaning is often specific to the domain, dataset, and eventual analysis,
 leading to a breadth of possible errors that are manifest in the data and a variety of options to clean it.
-The user must go through the cleaning process with little or no guidance, deciding for each of her data sources what to extract, how to clean it,
-and whether that cleaning will significantly change results. 
-Without a general, user-efficient, and scalable data cleaning system, analysts have to repeatedly manually construct data cleaning workflows while simultaneously managing a very complex tradeoff space.
+The user must go through the cleaning process with little or no guidance, deciding for each of her data sources what to extract, how to clean it, and whether that cleaning will significantly change results.
 
-Figure~\ref{fig:ex-plan} shows a data cleaning workflow that prepares a dataset of unstructured restaurant webpages for analysis.
-In order to run queries over the restaurants, the data analyst must extract structured fields of interest (e.g. address, cuisine category), then eliminate other sources of error, such as duplicate restaurant entries or non-canonical cuisine categories (e.g., `Chinese' vs. `Chinese food'). 
-Though these data cleaning requirements have been specified at a logical level, there is a huge space of possible \textit{physical} implementations of the logical operators. 
+Figure~\ref{fig:ex-plan} shows a common progression for the development of a data cleaning operator, in this case the extraction of a restaurant's address from its unstructured webpage.
+Though this operation can easily be represented at a \textit{logical} level by its inputs and outputs, there is a huge space of possible \textit{physical} implementations of the logical operator. 
 For example, extraction could be rule-based, rely on structured learning, ask crowd workers to extract the desired data fields, or some combination of all three.
 Even after selecting (say) a crowd-based operator, many parameters might influence the quality of the output data or the speed and cost of cleaning it: the number of crowd workers who vote on the extraction for a given webpage, the amount each worker is paid, etc.
-A priori, a data analyst has little intuition for what physical plan will be optimal in this large space. 
-In practice, she will likely pick a simple default for each logical operator (say, a rule-based extraction), then run data through the workflow and iterate by changing parameters or choosing new physical operators until she is satisfied with the cleaned data.
+A priori, a data analyst has little intuition for what physical plan will be optimal in this large space.
+
+In practice, she will likely start by sampling the data, applying a simple method such as a rule-based approach, and querying the output to get a sense of the method's effectiveness (Figure~\ref{fig:ex-plan}.1).
+If the approach seems promising, she will apply the method to the entire dataset (Figure~\ref{fig:ex-plan}.2).
+However, the first approach tried seldom yields the desired accuracy, so the data analyst might have to experiment with other physical operators, for example a crowd operator that uses human workers to manually perform the extraction (Figure~\ref{fig:ex-plan}.3).
+Though such adjustments might improve accuracy, using the crowd to process every webpage is prohibitively slow.
+To achieved the desired accuracy without sacrificing speed, the data analyst now must experiment with hybrid physical implementations (Figure~\ref{fig:ex-plan}.4).
+Though this iterative design process eventually produces a satisfactory physical implementation of the extraction logical operator, to prepare the restaurant dataset for analysis, our analyst must implement and chain together several logical operators, e.g. eliminating duplicate restaurants from the dataset or canonicalizing categorical variables such as cuisine type.
+Without a general, scalable, and interactive system that supports rapid iteration on candidate cleaning plans, analysts have to manually construct a physical plan for each logical operator, requiring significant manual coding and parameter optimization.
 
 %The prevalance of data cleaning systems in both the research and industrial communities --
 %Corleone does blah, XXX addresses blah. Nadeef does blah -- speak to the importance of a
@@ -43,42 +50,30 @@ In practice, she will likely pick a simple default for each logical operator (sa
 % 1. have slow feedback loops (dataset-dependence, …)
 % 2. solve very specific data-cleaning tasks
 Since the beginning of data management, systems have been explored by both the research and industrial communities to improve data cleaning efficiency and quality.
-However, no existing systems address the end-to-end data cleaning process described above.
+However, no existing systems address the end-to-end iterative data cleaning process described above.
 Extract-transform-load (ETL) systems~\cite{informatica,talend,apachefalcon} require developers to manually write data cleaning rules and execute them as long batch jobs, 
-and constraint-driven tools that allow analysts to define ``data quality rules" and automatically propose corrections to maximally satisfy these rules \cite{DBLP:conf/sigmod/DallachiesaEEEIOT13}.
+and constraint-driven tools allow analysts to define ``data quality rules" and automatically propose corrections to maximally satisfy these rules \cite{DBLP:conf/sigmod/DallachiesaEEEIOT13}.
 Unfortunately, neither provide the opportunity for iteration or user feedback, inhibiting the user's ability to rapidly prototype different data cleaning solutions.
-Projects such as Wrangler~\cite{wrangler,trifacta} and OpenRefine~\cite{openrefine} support iteration with user-centric spreadsheet-style interfaces that enable the user to inspect a sample of the dataset, compose data cleaning sequences using a direct manipulation interface, and apply these sequences to the full dataset.
-However, they are limited to specific extraction-based cleaning tasks, do not support crowd or machine learning-based refinement at scale, and cannot incorporate user feedback to optimize the data cleaning sequences.
+Projects such as Wrangler~\cite{wrangler,trifacta} and OpenRefine~\cite{openrefine} support iteration with spreadsheet-style interfaces that enable the user to compose data cleaning sequences by directly manipulating a sample of the data and applying these sequences to the full dataset.
+However, they are limited to specific cleaning tasks such as simple text transformations, do not support crowd-based processing at scale, and cannot incorporate user feedback to optimize the physical implementation of the data cleaning sequences.
 Crowd-based~\cite{gokhale2014corleone,stonebraker2013data} systems have been proposed to relieve the data cleaning analyst of the burden of rule specification or manual cleaning, but are usually very task specific (e.g., de-duplication~\cite{gokhale2014corleone,park2014crowdfill,eracer,chen2014integrating}) and require analysts to awkwardly chain systems together to execute the entire cleaning workflow, preventing end-to-end optimization of the entire plan.
 These existing limitations suggest the need for a system that is general enough to adapt to a wide range of data cleaning applications, scales to large datasets, and natively supports fast-feedback interactions to enable rapid data cleaning iteration.
 
-In this paper, we introduce \sys, a system designed to support such a workflow end to end.
-\sys allows users to specify declarative data cleaning plans composed of rule-based, learning-based, or crowd-based operators, then makes cost-aware recommendations for improving the accuracy or latency of a plan by swapping in new physical operators or modifying their parameters.
-\sys supports rapid iteration on plans by providing users with the opportunity to provide ground-truth feedback after each logical operator in the plan, improving recommendations, and provides efficient support for making adjustments to in-flight plans using caching and tuple lineage.
+In this paper, we introduce \sys, a system designed to support the iterative development and optimization of data cleaning plans end to end.
+\sys allows users to specify declarative data cleaning plans composed of rule-based, learning-based, or crowd-based operators, then enabling rapid iteration on plans with cost-aware recommendations for improving the accuracy or latency of a plan by swapping in new physical operators or modifying their parameters.
+Early, exploratory plans are supported with sampling and approximate query processing techniques~\cite{wang1999sample}.
+\sys additionally provides users with the opportunity to provide ground-truth feedback after each logical operator in the plan to improve recommendations, and supports adjusting in-flight plans efficiently using caching and tuple lineage.
 
-Supporting these capabilities requires a mixture of careful engineering 
+Supporting these capabilities requires a combination of careful engineering 
 as well as tackling several research challenges:
 
 \squishlist
-\item {\bf Operator and API design}: We have designed a core set of logical data cleaning operators --
-filter, similarity join, extract and sample -- that can be composed to
-implement high-level cleaning tasks such as entity resolution.  Operators support
-rule-based, learning-based, and crowd-based physical implementations. 
-To support crowd-based cleaning operators, we have developed a crowd-managment 
-framework that delivers data cleaning tasks to multiple crowdsourcing platforms using a common API.
+\item \textbf{Sampling}: We provide sampling as a first-class logical operator for data cleaning plans that tolerate approximation, and use it to speed up iteration on early-stage plans.
 
-\item {\bf Near-instant feedback}: We accelerate feedback loops in the system with techniques to reduce both 
-intra- and inter-operator latencies. To improve Crowd operator performance, we leverage techniques such as straggler 
-mitigation~\cite{venkataraman2014power}, worker latency modeling, and bandit algorithms~\cite{thompson1933likelihood}
-to consistently retrieve crowd results in seconds rather than hours. To reduce latencies at a plan level, we allow data cleaning to 
-proceed asynchronously and allow users to introspect and modify data cleaning plans at any point during their execution.
+\item \textbf{Recommendation}: We leverage interactive user feedback to recommend cost-aware changes to in-flight cleaning plans that allow users to trade off accuracy and latency, and provide efficient mechanisms for implementing recommended changes without re-executing the plan on already cleaned tuples.
 
-\item {\bf Hot Swapping}: In contrast to batch-oriented data cleaning, rapid iteration necessitates the
-ability to tune an operator parameter or reconfigure the sequence of cleaning operators as the cleaning
-plan is running.  We develop techniques that leverage tuple lineage to intelligently cache intermediate results to minimize
-re-computation when an in-flight plan has been modified.
+\item \textbf{Crowd Latency}: We leverage techniques for straggler mitigation~\cite{venkataraman2014power} and model crowd worker speed and accuracy to reduce the (often rate-limiting) latency of crowd data cleaning, consistently retrieving results in seconds rather than hours.
 \squishend
-
 
 In our demonstration, we will run an entity resolution plan on two restaurant datasets, and
 show how \sys can be used to 1) specify and execute a data cleaning plan using our domain specific
@@ -91,8 +86,7 @@ Users can then execute a plan over a live crowd that uses the audience as worker
 that uses pre-collected crowd responses. The dashboard (Figure~\ref{screenshot-rec}) also provides a live inspection
 interface to view the status of the cleaning plan as it executes.
 
-
-
+\vspace{-0.2cm}
 %Our contributions/requirements
 %different ways to tighten the feedback loop:
 %end-to-end latency/cost (operator optimization)
