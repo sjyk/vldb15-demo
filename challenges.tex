@@ -6,19 +6,17 @@ In this section, we describe some of the research and engineering challenges in 
 To support evolving data quality needs, there are three main research challenges in \sys: (1) sampling, (2) recommendation, and (3) crowd sourcing.
 
 \subsubsection{Sampling}
-In prior work, we explored the problem of estimating aggregate query results over dirty data ~\cite{wang1999sample}, 
-addressing the challenge that data cleaning may change the underlying statistics of a sample.
-In SampleClean \cite{wang1999sample}, we found that aggregate queries can often be answered with very high accuracy (i.e 99\%) for only a small fraction of clean data.
-In the context of the data lifecycle, data scientsts often run aggregate queries e.g., the number of Chinese resturants, on a new data source to assess the quality of the data.
-In \sys, we implement sampling as a logical operator that can be used for quickly prototyping and optimizing workflows on samples of data and then transfering these optimizations to full datasets.
-
+In prior work, we explored the problem of estimating aggregate query results over dirty data ~\cite{wang1999sample}.
+In SampleClean \cite{wang1999sample}, we found that aggregate queries can often be answered with very high accuracy (i.e 99\%) with only a small fraction of clean data, and we can clean just enough for the applications data quality requirements.
+In the context of the iterative design, data analysts often run aggregate queries e.g., the number of Chinese restaurants, on a new data source to assess the quality of the data.
+In \sys, we implement sampling as a logical operator that can be used for quickly prototyping and optimizing workflows on samples of data and then transferring these optimizations to full datasets.
 There are many additional research opportunities with sampling.
 For example, sampling allows for quick introspection of otherwise opaque operators, such as testing the quality of a crowd with a small set of records.
 We also build a significance testing framework to allow users to declare aggregate queries of interest and notify them when a change to 
 a plan has a statistically significant effect.
 
 \subsubsection{Recommendation}
-Our first research challenge is to recommend changes to a data cleaning plan based on user feedback. 
+Our next research challenge is to recommend changes to a data cleaning plan based on user feedback. 
 The user can inspect the output of an operator and identify result tuples that are incorrect. This feedback is operator specific. For example, in a Similarity Join the user can mark false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user can mark incorrect attribute values. 
 We highlight two key challenges: generating recommendations and applying the recommendations mid-execution.
 
@@ -26,7 +24,7 @@ We highlight two key challenges: generating recommendations and applying the rec
 
 {\noindent \bf Recommendations:} There are three types of recommendations: (1) parameter change, (2) operator replacement, and (3) operator addition.
 
-\textit{Parameter Change.} Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specifc, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
+\textit{Parameter Change.} Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specific, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
 For example, Similarity Joins have a similarity threshold and a similarity function. 
 Increasing this threshold reduces the selectivity of the join, \sys chooses a threshold that maximizes the F1-score. 
 
@@ -38,7 +36,7 @@ Additionally, we can try different variants of automated operators to test how a
 
 \textit{Operator Addition.}  There are also cases where we may want to add another physical operator, while still preserving the logical input-output behavior of the workflow.
 It is common in extraction tasks to have most records accurately extracted with an automated extractor but only a small subset requiring additional inspection. 
-For these cases, we can add a crowd-based Filter operator to seperate these examples for additional cleaning.
+For these cases, we can add a crowd-based Filter operator to separate these examples for additional cleaning.
 
 \vspace{.5em}
 

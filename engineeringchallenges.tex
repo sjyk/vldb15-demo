@@ -11,13 +11,13 @@ In \sys, we address this problem by designing an API that allows for the composi
 Many of the research challenges in \sys rely on clear specifications of the input and output behaviors of
 individual data cleaning operators.
 For example, Hot Swapping is only possible between two physical operators that have exactly the same input and output specification.
-The engineering challege is to retain modularity and extensibility while restricting operators.
+The engineering challenge is to retain modularity and extensibility while restricting operators.
 We build a class hierarchy of data cleaning operators which through inheritance and parameterization specify clear input and output behaviors.
 
 One draw back of an extensive API is that the choices may overwhelm a user.
 Many of our API methods and classes come with inherited sensible defaults.
 For example, if the user fails to completely specify the semantics of the similarity function through the API, 
-the system will avoid optimizations and perform a naive cartesian products and filtering.
+the system will avoid optimizations and perform a naive Cartesian products and filtering.
 These behaviors come naturally through the use of inheritance and polymorphism.
 
 \subsubsection{Crowdsourcing Platform}
