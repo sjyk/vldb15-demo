@@ -27,7 +27,7 @@ The underlying problem is that data cleaning is often specific to the domain, da
 The analyst is faced with a breadth of possible errors that are manifest in the data and a variety of options to clean it.
 She must go through the cleaning process with little or no guidance, deciding for each of her data sources what to extract, how to clean it, and whether that cleaning will significantly change results.
 
-Data analysis is inherently iterative and Figure~\ref{fig:ex-plan} shows a common progression for the development of a data cleaning operator, in this case the extraction of a restaurant's address from its unstructured webpage.
+Data analysis is inherently iterative and Figure~\ref{fig:ex-plan} shows a common progression for the development of a data cleaning plan, in this case the extraction of a restaurant's address from its unstructured webpage.
 While this operation can easily be represented at a \textit{logical} level by its inputs and outputs, there is a huge space of possible \textit{physical} implementations of the logical operator. 
 For example, extraction could be rule-based, rely on structured learning, ask crowd workers to extract the desired data fields, or some combination of all three.
 Even after selecting (say) a crowd-based operator, many parameters might influence the quality of the output data or the speed and cost of cleaning it: the number of crowd workers who vote on the extraction for a given webpage, the amount each worker is paid, etc.
