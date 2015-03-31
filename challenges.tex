@@ -4,8 +4,8 @@ To support evolving data quality needs, there are three main research challenges
 
 \subsection{Sampling}
 In prior work, we explored the problem of estimating aggregate query results over dirty data ~\cite{wang1999sample}.
-In SampleClean \cite{wang1999sample}, we found that aggregate queries can often be answered with very high accuracy (i.e 99\%) with only a small fraction of clean data, and we can clean just enough for the applications data quality requirements.
-In the context of the iterative design, data analysts often run aggregate queries e.g., the number of Chinese restaurants, on a new data source to assess the quality of the data.
+In SampleClean \cite{wang1999sample}, we found that aggregate queries can often be answered with very high accuracy (i.e 99\%) with only a small fraction of clean data, and we can clean just enough for the application's data quality requirements.
+In the context of the iterative design, data analysts often run aggregate queries, e.g., count the number of Chinese restaurants, on a new data source to assess the quality of the data.
 In \sys, we implement sampling as a logical operator that can be used for quickly prototyping and optimizing workflows on samples of data and then transferring these optimizations to full datasets.
 There are many additional research opportunities with sampling.
 For example, sampling allows for quick introspection of otherwise opaque operators, such as testing the quality of a crowd with a small set of records.
@@ -23,12 +23,12 @@ We highlight two key challenges: generating recommendations and applying the rec
 
 \textit{Parameter Change.} Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specific, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
 For example, Similarity Joins have a similarity threshold and a similarity function. 
-Increasing this threshold reduces the selectivity of the join, \sys chooses a threshold that maximizes the F1-score. 
+Increasing this threshold reduces the selectivity of the join, and \sys chooses a threshold that maximizes the F1-score. 
 
 \textit{Operator Replacement.} 
 \sys recommends changes to these physical operators when the user indicates that they are not satisfied with the output.
 For example, we can use the user feedback as training examples in our learners as an estimate of the crowd performance.
-This allows us to estimate the value of replacing the physical operator with a active learning variant.
+This allows us to estimate the value of replacing the physical operator with an active learning variant.
 Additionally, we can try different variants of automated operators to test how accurate they are with respect to the user feedback.
 
 \textit{Operator Addition.}  There are also cases where we may want to add another physical operator, while still preserving the logical input-output behavior of the workflow.
@@ -41,17 +41,17 @@ For these cases, we can add a crowd-based Filter operator to separate these exam
 restart the plan every time the user wants to make a small change.
 We design a framework for \emph{hot swapping} plan operators that re-uses existing results while ensuring that the output of the swapped plan is the same as if the new plan had been run from the start.
 
-\textit{Caching.} allows for result re-use if a downstream operator is modified or added.
+\textit{Caching} allows for result re-use if a downstream operator is modified or added.
 If the system has sufficient memory, then we can cache all of the intermediate results. 
 However this is not always possible, and the key challenge is to select which results to cache.
 To do this, we have to integrate the caching framework with our recommendation engine.
 When we make a recommendation for a change, we must cache the preceding operator. 
 
-\textit{Lineage.} allows us to understand how results change if upstream operators are modified.
+\textit{Lineage} allows us to understand how results change if upstream operators are modified.
 For example, decreasing a similarity join threshold increases the number of output pairs, but adding an additional filtering step 
 reduces the number of output tuples. The key property here is monotonicity, and some types of monotone \textsf{Filter} and \textsf{SimilarityJoin} are data cleaning analogs for a Select-Join relational algebra.
-We can therefore model this problem as a view/lineage and perform a variant of incremental maintenance to update the 
-final result given insertion or deletion of intermediate tuples.
+We can therefore model upstream hot-swapping as an incremental view maintenance problem and update the 
+final result based on the insertion or deletion of tuples earlier in the plan.
 
 \iffalse
 \vspace{.5em}
@@ -71,7 +71,7 @@ the user with an estimated cost.
 
 
 \vspace{-0.2cm}
-\subsubsection{Crowdsourcing}
+\subsection{Crowdsourcing}
 \vspace{.2em}
 
 %{\noindent \bf Sampling:} One way to reduce operator latency is to reduce the number of tuples each operator processes.
