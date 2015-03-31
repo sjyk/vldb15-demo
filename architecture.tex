@@ -30,12 +30,15 @@ We provide a language for specifying the composition of data cleaning operators.
 The logical operators define the input and output behavior of the operation and 
 the physical operators specify the implementation.
 The general syntax of this language is:
+{\scriptsize
 \begin{lstlisting}
 <logical operator> on <relations>
   with <physical operators> , <params>
 \end{lstlisting}
+}
 
 These expressions are composable. For example, the following represents the data cleaning plan in Figure~\ref{fig:arch} (an entity resolution plan):
+{\scriptsize
 \begin{lstlisting} 
 Filtering on (
     SimilartyJoin on (
@@ -44,6 +47,7 @@ Filtering on (
     with Jaccard, thresh=0.8) 
 with CrowdDeduplication, numVotes=3
 \end{lstlisting}
+}
 Additionally, \sys provides integration of our DSL with Scala/Apache Spark, allowing SchemaRDDs (Spark RDDs with additional schema information) to serve as base tables in expressions.
 
 \subsection{Cleaning Operators}
