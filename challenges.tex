@@ -3,42 +3,60 @@
 In this section, we describe some of the research and engineering challenges in developing \sys.
 
 \subsection{Research Challenges}
-There are three principal research challenges in \sys: (1) recommendations based on user feedback, (2) mid-execution modification of plans, and (3) 
-optimization of crowd physical operators.
+To support evolving data quality needs, there are three main research challenges in \sys: (1) sampling, (2) recommendation, and (3) crowd sourcing.
+
+\subsubsection{Sampling}
+In prior work, we explored the problem of estimating aggregate query results over dirty data ~\cite{wang1999sample}, 
+addressing the challenge that data cleaning may change the underlying statistics of a sample.
+In SampleClean \cite{wang1999sample}, we found that aggregate queries can often be answered with very high accuracy (i.e 99\%) for only a small fraction of clean data.
+In the context of the data lifecycle, data scientsts often run aggregate queries e.g., the number of Chinese resturants, on a new data source to assess the quality of the data.
+In \sys, we implement sampling as a logical operator that can be used for quickly prototyping and optimizing workflows on samples of data and then transfering these optimizations to full datasets.
+
+There are many additional research opportunities with sampling.
+For example, sampling allows for quick introspection of otherwise opaque operators, such as testing the quality of a crowd with a small set of records.
+We also build a significance testing framework to allow users to declare aggregate queries of interest and notify them when a change to 
+a plan has a statistically significant effect.
 
 \subsubsection{Recommendation}
 Our first research challenge is to recommend changes to a data cleaning plan based on user feedback. 
-%At any edge of our operator D.A.G, 
-The user can inspect the output of an operator and identify result tuples that are incorrect. This feedback is operator specific. For example, in a Similarity Join the user can mark false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user can mark incorrect attribute values. Based on the feedback, our system can make both intra-operator (changes of parameters within a operator) and inter-operator (changes of operators within a plan) recommendations. 
-%We then generate a set of recommended changes to the existing plan based on this information.
-
-%However, determining the correctness of a data cleaning operator requires a before-and-after view of the data.
-%We use lineage to show the user a result tuple and all the contributing input tuples.
-
-%The user marks result tuples that are incorrect using the input and the results. 
-%This feedback is operator specific, for example, in a Similarity Join the user marks false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user marks incorrect attribute values.
-%We then generate a set of recommended changes to the existing plan based on this information.
-%Our recommendations do not change the logical plan, and only modify and add physical operators to the logical plan.
+The user can inspect the output of an operator and identify result tuples that are incorrect. This feedback is operator specific. For example, in a Similarity Join the user can mark false positives (matched pairs that should not be similar) and false negatives (unmatched similar pairs) and in an Extraction the user can mark incorrect attribute values. 
+We highlight two key challenges: generating recommendations and applying the recommendations mid-execution.
 
 \vspace{.25em}
 
-{\noindent \bf Intra-Operator Recommendation:} Changing parameters are the first type of recommendations in \sys.
-Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specifc, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
+{\noindent \bf Recommendations:} There are three types of recommendations: (1) parameter change, (2) operator replacement, and (3) operator addition.
+
+\textit{Parameter Change.} Many of the physical operators in \sys have tunable parameters, whose values is often very dataset-specifc, and the user feedback gives us a way to evaluate the quality of the initial parameter choice. 
 For example, Similarity Joins have a similarity threshold and a similarity function. 
 Increasing this threshold reduces the selectivity of the join, \sys chooses a threshold that maximizes the F1-score. 
 
-\vspace{.25em}
-
-{\noindent \bf Inter-Operator Recommendation:} The next type of recommendations are replacements of physical operators.
-There are many physical implementations of the same operator, i.e. crowd vs. automated filtering or differing similarity metrics for Similarity Join. 
+\textit{Operator Replacement.} 
 \sys recommends changes to these physical operators when the user indicates that they are not satisfied with the output.
 For example, we can use the user feedback as training examples in our learners as an estimate of the crowd performance.
 This allows us to estimate the value of replacing the physical operator with a active learning variant.
 Additionally, we can try different variants of automated operators to test how accurate they are with respect to the user feedback.
 
-There are also cases where we may want to add another physical operator, while still preserving the logical input-output behavior of the workflow.
+\textit{Operator Addition.}  There are also cases where we may want to add another physical operator, while still preserving the logical input-output behavior of the workflow.
 It is common in extraction tasks to have most records accurately extracted with an automated extractor but only a small subset requiring additional inspection. 
 For these cases, we can add a crowd-based Filter operator to seperate these examples for additional cleaning.
+
+\vspace{.5em}
+
+{\noindent \bf Dynamic Modification:} To be able to quickly modify cleaning plans after recommendations, we explore ways to intelligently re-use computation. Because cleaning can be time-consuming, it is inefficient to 
+restart the plan every time the user wants to make a small change.
+We design a framework for \emph{hot swapping} plan operators that re-uses existing results while ensuring that the output of the swapped plan is the same as if the new plan had been run from the start.
+
+\textit{Caching.} allows for result re-use if a downstream operator is modified or added.
+If the system has sufficient memory, then we can cache all of the intermediate results. 
+However this is not always possible, and the key challenge is to select which results to cache.
+To do this, we have to integrate the caching framework with our recommendation engine.
+When we make a recommendation for a change, we must cache the preceding operator. 
+
+\textit{Lineage.} allows us to understand how results change if upstream operators are modified.
+For example, decreasing a similarity join threshold increases the number of output pairs, but adding an additional filtering step 
+reduces the number of output tuples. The key property here is monotonicity, and some types of monotone \textsf{Filter} and \textsf{SimilarityJoin} are data cleaning analogs for a Select-Join relational algebra.
+We can therefore model this problem as a view/lineage and perform a variant of incremental maintenance to update the 
+final result given insertion or deletion of intermediate tuples.
 
 \iffalse
 \vspace{.5em}
@@ -49,27 +67,13 @@ the user with an estimated cost.
 
 \fi
 
-\subsubsection{Dynamic Modification}
+%\subsubsection{Dynamic Modification}
 %The next category of optimizations happen at the plan-level, i.e., the sequence or execution pattern of the operators.
 %We highlight two challenges: allowing users to see early results, and allowing users to modify plans mid-execution.
 %\vspace{.3em}
 %{\noindent \bf Asynchronous Data Cleaning:} To provide fine-grained feedback during a data cleaning process, our system executes data cleaning operations asynchronously. Tuples are processed in a streaming fashion by each of the operators in the plan and the intermediate results are persisted, allowing users to query the results at any time. Thus, at any time, the user can get a ``best effort" query result.
 %\vspace{.3em}
-To be able to quickly modify cleaning plans after recommendations, we explore ways to intelligently re-use computation. Because cleaning can be time-consuming, it is inefficient to 
-restart the plan every time the user wants to make a small change.
-We design a framework for \emph{hot swapping} plan operators that re-uses existing results while ensuring that the output of the swapped plan is the same as if the new plan had been run from the start.
 
-\textit{Caching} allows for result re-use if a downstream operator is modified or added.
-If the system has sufficient memory, then we can cache all of the intermediate results. 
-However this is not always possible, and the key challenge is to select which results to cache.
-To do this, we have to integrate the caching framework with our recommendation engine.
-When we make a recommendation for a change, we must cache the preceding operator. 
-
-\textit{Lineage} allows us to understand how results change if upstream operators are modified.
-For example, decreasing a similarity join threshold increases the number of output pairs, but adding an additional filtering step 
-reduces the number of output tuples. The key property here is monotonicity, and some types of monotone \textsf{Filter} and \textsf{SimilarityJoin} are data cleaning analogs for a Select-Join relational algebra.
-We can therefore model this problem as a view/lineage and perform a variant of incremental maintenance to update the 
-final result given insertion or deletion of intermediate tuples.
 
 \vspace{-0.2cm}
 \subsubsection{Crowd Operator Latency}
